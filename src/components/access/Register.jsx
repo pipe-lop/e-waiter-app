@@ -43,11 +43,6 @@ const Register = ({ navigation }) => {
 
   const addUser = async () => {
     if (isPasswordChecked) {
-      console.log(user.password + " --- " + passwordRepeted);
-      console.log("añadiendo usuario");
-      console.log("Nombre: " + user.firstName + " " + user.lastName);
-      console.log("Email: " + user.email);
-      console.log("Contraseña: " + user.password);
       const newUser = {
         nombre: user.firstName,
         apellidos: user.lastName,
