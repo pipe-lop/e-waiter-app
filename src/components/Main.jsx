@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Constants from "expo-constants";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import theme from "../theme.js";
 import Welcome from "./Welcome.jsx";
 import Home from "./Home.jsx";
@@ -8,16 +8,16 @@ import CategoryItems from "./CategoryItems.jsx";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ItemDetail from "./ItemDetail.jsx";
-import Register from "./access/Register.jsx";
 import { onAuthStateChanged } from "firebase/auth";
 import firebase from "../../database/firebase.js";
+import Login from "./access/Login.jsx";
 
 const Stack = createNativeStackNavigator();
 
 const InsideStack = createNativeStackNavigator();
 
 function InsideLayout() {
-  <InsideStack.Navigator>
+  <InsideStack.Navigator initialRouteName="Welcome">
     <InsideStack.Screen name="Welcome" component={Welcome} />
     <InsideStack.Screen name="Home" component={Home} />
     <InsideStack.Screen name="ItemDetail" component={ItemDetail} />
@@ -30,6 +30,7 @@ const Main = () => {
 
   useEffect(() => {
     onAuthStateChanged(firebase.auth, (user) => {
+      console.log(user)
       setUser(user);
     });
   }, []);
@@ -43,7 +44,7 @@ const Main = () => {
         {user ? (
           <Stack.Screen name="Inside" component={InsideLayout} />
         ) : (
-          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="Login" component={Login} />
         )}
       </Stack.Navigator>
     </NavigationContainer>

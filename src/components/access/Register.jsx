@@ -74,14 +74,12 @@ const Register = ({ navigation }) => {
             user.email,
             user.password
           );
-          console.log(response.user);
           await setDoc(doc(firebase.db, "users", response.user.uid), {
             firstName: user.firstName,
             lastName: user.lastName
           });
           Alert.alert("Atención", "El usuario se ha guardado correctamente");
       }catch(error) {
-        console.log(error)
         Alert.alert("Atención", "Las contraseñas no coinciden");
       }
       finally{
