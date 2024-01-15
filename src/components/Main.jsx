@@ -1,26 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Constants from "expo-constants";
 import { StyleSheet } from "react-native";
 import theme from "../theme.js";
-import Welcome from './Welcome.jsx';
-import Home from './Home.jsx';
+import Welcome from "./Welcome.jsx";
+import Home from "./Home.jsx";
 import CategoryItems from "./CategoryItems.jsx";
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ItemDetail from "./ItemDetail.jsx";
 import Register from "./access/Register.jsx";
+import { onAuthStateChanged } from "firebase/auth";
+import firebase from "../../database/firebase.js";
 
 const Stack = createNativeStackNavigator();
 
+const InsideStack = createNativeStackNavigator();
+
+function InsideLayout() {
+  <InsideStack.Navigator>
+    <InsideStack.Screen name="Welcome" component={Welcome} />
+    <InsideStack.Screen name="Home" component={Home} />
+    <InsideStack.Screen name="ItemDetail" component={ItemDetail} />
+    <InsideStack.Screen name="CategoryItems" component={CategoryItems} />
+  </InsideStack.Navigator>;
+}
+
 const Main = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    onAuthStateChanged(firebase.auth, (user) => {
+      setUser(user);
+    });
+  }, []);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Register" screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Register" component={Register}/>
-        <Stack.Screen name="Welcome" component={Welcome}/>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="ItemDetail" component={ItemDetail} />
-        <Stack.Screen name="CategoryItems" component={CategoryItems} />
+      <Stack.Navigator
+        initialRouteName="Register"
+        screenOptions={{ headerShown: false }}
+      >
+        {user ? (
+          <Stack.Screen name="Inside" component={InsideLayout} />
+        ) : (
+          <Stack.Screen name="Register" component={Register} />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

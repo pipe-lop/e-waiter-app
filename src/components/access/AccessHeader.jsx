@@ -3,14 +3,14 @@ import { Image, Text, View, StyleSheet } from "react-native";
 import Constants from 'expo-constants';
 import theme from "../../theme";
 
-const AccessHeader = ({title}) => {
+const AccessHeader = ({title, keyboardEnabled}) => {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
         <Image style={styles.logo} source={require("../../../assets/logo.png")} />
       </View>
       <View style={styles.row}>
-        <Text style={styles.heading}>{title}</Text>
+        <Text style={keyboardEnabled ? styles.smallHeading : styles.heading}>{title}</Text>
       </View>
     </View>
   );
@@ -30,10 +30,19 @@ const styles = StyleSheet.create({
     width: 240,
     height: 130,
   },
+  smallLogo: {
+    width: 110,
+    height: 60,
+  },
   heading: {
     fontFamily: "Roboto",
     fontSize: theme.fontSizes.h1,
     marginTop: 40,
+  },
+  smallHeading: {
+    fontFamily: "Roboto",
+    fontSize: theme.fontSizes.h3,
+    marginTop: 5,
   },
 });
 
