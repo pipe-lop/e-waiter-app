@@ -11,6 +11,7 @@ import ItemDetail from "./ItemDetail.jsx";
 import { onAuthStateChanged } from "firebase/auth";
 import firebase from "../../database/firebase.js";
 import Login from "./access/Login.jsx";
+import Register from "./access/Register.jsx";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,14 @@ function InsideLayout() {
     </InsideStack.Navigator>
   );
 }
+function OutsideLayout() {
+  return (
+    <Stack.Navigator screenOptions={{headerShown:false}}>
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Register" component={Register} />
+    </Stack.Navigator>
+  );
+}
 
 const Main = () => {
   const [user, setUser] = useState(null);
@@ -39,7 +48,7 @@ const Main = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Register"
+        initialRouteName="Login"
         screenOptions={{ headerShown: false }}
       >
         {user ? (
@@ -49,7 +58,7 @@ const Main = () => {
             options={{ headerShown: false }}
           />
         ) : (
-          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Outside" component={OutsideLayout} />
         )}
       </Stack.Navigator>
     </NavigationContainer>
