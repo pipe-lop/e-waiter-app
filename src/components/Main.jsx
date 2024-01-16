@@ -17,12 +17,14 @@ const Stack = createNativeStackNavigator();
 const InsideStack = createNativeStackNavigator();
 
 function InsideLayout() {
-  <InsideStack.Navigator initialRouteName="Welcome">
-    <InsideStack.Screen name="Welcome" component={Welcome} />
-    <InsideStack.Screen name="Home" component={Home} />
-    <InsideStack.Screen name="ItemDetail" component={ItemDetail} />
-    <InsideStack.Screen name="CategoryItems" component={CategoryItems} />
-  </InsideStack.Navigator>;
+  return (
+    <InsideStack.Navigator screenOptions={{headerShown:false}}>
+      <InsideStack.Screen name="Welcome" component={Welcome} />
+      <InsideStack.Screen name="Home" component={Home} />
+      <InsideStack.Screen name="ItemDetail" component={ItemDetail} />
+      <InsideStack.Screen name="CategoryItems" component={CategoryItems} />
+    </InsideStack.Navigator>
+  );
 }
 
 const Main = () => {
@@ -30,7 +32,6 @@ const Main = () => {
 
   useEffect(() => {
     onAuthStateChanged(firebase.auth, (user) => {
-      console.log(user)
       setUser(user);
     });
   }, []);
@@ -42,7 +43,11 @@ const Main = () => {
         screenOptions={{ headerShown: false }}
       >
         {user ? (
-          <Stack.Screen name="Inside" component={InsideLayout} />
+          <Stack.Screen
+            name="Inside"
+            component={InsideLayout}
+            options={{ headerShown: false }}
+          />
         ) : (
           <Stack.Screen name="Login" component={Login} />
         )}
