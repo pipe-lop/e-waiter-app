@@ -22,7 +22,6 @@ const styles = {
     height: 166,
     backgroundColor: theme.colors.white,
     justifyContent: "center",
-    margin: 10,
     borderRadius: 20,
   },
   text: {

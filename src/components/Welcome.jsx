@@ -14,7 +14,7 @@ const Welcome = ({ navigation }) => {
       <View style={styles.row}>
         <Text style={styles.heading}>Bienvenido</Text>
       </View>
-      <View style={styles.row}>
+      <View style={styles.rowOptions}>
         <WhereEatOption Description="Restaurante" navigation={navigation}/>
         <WhereEatOption Description="Para llevar" navigation={navigation}/>
       </View>
@@ -32,6 +32,11 @@ const styles = StyleSheet.create({
     row: {
       flexDirection: "row",
       justifyContent: "center",
+    },
+    rowOptions: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      paddingHorizontal: 20
     },
     logo: {
       width: 240,
