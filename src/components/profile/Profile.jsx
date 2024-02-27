@@ -3,6 +3,8 @@ import Constants from "expo-constants";
 import { Text, View } from "react-native";
 import ProfileHeader from "./ProfileHeader";
 import UserAvatar from "react-native-user-avatar";
+import ProfileOption from "./ProfileOption";
+import theme from "../../theme";
 
 const Profile = ({ navigation }) => {
   return (
@@ -16,7 +18,12 @@ const Profile = ({ navigation }) => {
           name={"Andres"}
         />
       </View>
-      <Text style={{ textAlign: "center" }}>Profile page</Text>
+      <View style={styles.options}>
+        <ProfileOption navigation={navigation} title="Mis pedidos"/>
+        <ProfileOption navigation={navigation} title="Métodos de pago"/>
+        <ProfileOption navigation={navigation} title="Datos personales"/>
+        <ProfileOption navigation={navigation} title="Cerrar sesión"/>
+      </View>
     </View>
   );
 };
@@ -37,6 +44,9 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 60
+  },
+  options: {
+    width: "100%",
   }
 };
 
