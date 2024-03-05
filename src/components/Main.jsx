@@ -13,6 +13,7 @@ import firebase from "../../database/firebase.js";
 import Login from "./access/Login.jsx";
 import Register from "./access/Register.jsx";
 import Profile from "./profile/Profile.jsx"
+import ProfileDetails from "./profile/ProfileDetails.jsx";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,7 @@ function InsideLayout() {
       <InsideStack.Screen name="ItemDetail" component={ItemDetail} />
       <InsideStack.Screen name="CategoryItems" component={CategoryItems} />
       <InsideStack.Screen name="Profile" component={Profile} />
+      <InsideStack.Screen name="ProfileDetails" component={ProfileDetails} />
     </InsideStack.Navigator>
   );
 }

@@ -21,7 +21,7 @@ const Profile = ({ navigation }) => {
       <View style={styles.options}>
         <ProfileOption navigation={navigation} title="Mis pedidos"/>
         <ProfileOption navigation={navigation} title="Métodos de pago"/>
-        <ProfileOption navigation={navigation} title="Datos personales"/>
+        <ProfileOption navigation={navigation} title="Datos personales" page="ProfileDetails"/>
         <ProfileOption navigation={navigation} title="Cerrar sesión"/>
       </View>
     </View>
