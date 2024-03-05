@@ -1,13 +1,13 @@
 import React from "react";
 import { Image, Pressable, View } from "react-native";
-import { Icon } from "react-native-elements";
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const ProfileHeader = ({navigation}) => {
   const onPress = (page) => navigation.navigate(page);
   return (
     <View style={styles.row}>
       <View style={styles.col_1_of_3}>
-        <Icon name="menu" type="ionicon" />
+        <Ionicons name="menu" size={27}/>
       </View>
       <Pressable style={styles.col_2_of_3} onPress={() => onPress("Home")}>
         <Image
