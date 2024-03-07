@@ -7,7 +7,7 @@ const theme = {
     red: "#FF5733",
     blue: "#4287f5",
     yellow: "#f5e342",
-    fontGrey: "605f5f"
+    fontGrey: "#605f5f"
   },
   darkButton: {
     backgroundColor: "#101B1C",
