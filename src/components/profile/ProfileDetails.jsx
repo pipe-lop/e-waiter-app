@@ -111,7 +111,7 @@ const ProfileDetails = ({navigation}) => {
         />
       </View>
       <View style={styles.options}>
-        <ProfileOption navigation={navigation} title="Cambiar contraseña" />
+        <ProfileOption navigation={navigation} title="Cambiar contraseña" page={"ChangePassword"}/>
         <ProfileOption navigation={navigation} title="Eliminar mi cuenta" />
       </View>
     </View>
