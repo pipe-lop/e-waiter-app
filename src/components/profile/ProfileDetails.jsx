@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Constants from "expo-constants";
-import { Text, View } from "react-native";
+import { Alert, Text, View } from "react-native";
 import firebase, { auth } from "../../../database/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import SecondaryHeader from "../navigation/SecondaryHeader";
 import UserAvatar from "react-native-user-avatar";
 import CustomInput from "../formComponents/CustomInput";
@@ -51,12 +51,36 @@ const ProfileDetails = ({navigation}) => {
     setUser({ ...user, [name]: value });
     setSave(true)
   };
+
+  const updateUser = async () => {
+    const userDoc = doc(firebase.db, "users", user.id)
+    try{
+        console.log(user.id)
+        await updateDoc(userDoc, {
+            firstName: user.firstName,
+            lastName: user.lastName
+        });
+    }catch(error){
+        Alert.alert("Se ha producido un error al actualizar al usuario")
+        console.log(error)
+    }finally{
+        setSave(false)
+    }
+  }
+
+  const onPressSave = () => {
+    updateUser()
+  }
+
   return (
     <View style={styles.container}>
       <SecondaryHeader
         style={styles.header}
         title={"Datos Personales"}
         save={save}
+        onPress={() => {
+            onPressSave()
+        }}
       />
       <View style={styles.row}>
         <UserAvatar
@@ -88,7 +112,7 @@ const ProfileDetails = ({navigation}) => {
       </View>
       <View style={styles.options}>
         <ProfileOption navigation={navigation} title="Cambiar contraseña" />
-        <ProfileOption navigation={navigation} title="Borrar mi cuenta" />
+        <ProfileOption navigation={navigation} title="Eliminar mi cuenta" />
       </View>
     </View>
   );

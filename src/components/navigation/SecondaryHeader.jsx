@@ -3,18 +3,17 @@ import { Pressable, View, Text } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import theme from '../../theme';
 
-const SecondaryHeader = ({navigation, title, save}) => {
-  const onPress = (page) => navigation.navigate(page);
+const SecondaryHeader = ({navigation, title, save, onPress}) => {
   return (
     <View style={styles.row}>
       <View style={[styles.col_icon]}>
         <Ionicons name="arrow-back" size={27} />
       </View>
-      <Pressable style={[styles.col_title]} onPress={() => onPress("Home")}>
+      <View style={[styles.col_title]}>
         <Text style={styles.text}>{title}</Text>
-      </Pressable>
+      </View>
       { save ? 
-        <Pressable style={styles.col_save}>
+        <Pressable style={styles.col_save} onPress={onPress}>
             <Text style={styles.textSave}>Guardar</Text>
         </Pressable> 
         :
