@@ -2,8 +2,7 @@ import React from "react";
 import { Text, TouchableOpacity } from "react-native";
 import theme from "../../theme";
 
-const ProfileOption = ({ navigation, title, onPressAction }) => {
-  const onPress = (page) => navigation.navigate(page);
+const ProfileOption = ({ title, onPressAction }) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPressAction}>     
       <Text style={styles.textTitle}>{title}</Text>
