@@ -1,10 +1,25 @@
 import React from "react";
 import Constants from "expo-constants";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import ProfileHeader from "./ProfileHeader";
 import UserAvatar from "react-native-user-avatar";
 import ProfileOption from "./ProfileOption";
-import theme from "../../theme";
+import firebase from "../../../database/firebase";
+import { signOut } from "firebase/auth";
+
+
+const singOut = async() => {
+  try{
+    await signOut(firebase.auth)
+    .then(() => console.log('User signed out!'));
+  }catch(error){
+    console.log(error)
+  }
+}
+
+const onPress = (page, navigation) => {
+  navigation.navigate(page);
+}
 
 const Profile = ({ navigation }) => {
   return (
@@ -21,8 +36,8 @@ const Profile = ({ navigation }) => {
       <View style={styles.options}>
         <ProfileOption navigation={navigation} title="Mis pedidos"/>
         <ProfileOption navigation={navigation} title="Métodos de pago"/>
-        <ProfileOption navigation={navigation} title="Datos personales" page="ProfileDetails"/>
-        <ProfileOption navigation={navigation} title="Cerrar sesión"/>
+        <ProfileOption navigation={navigation} title="Datos personales" onPressAction={() => onPress("ProfileDetails", navigation)}/>
+        <ProfileOption navigation={navigation} title="Cerrar sesión" onPressAction={() => singOut()}/>
       </View>
     </View>
   );
