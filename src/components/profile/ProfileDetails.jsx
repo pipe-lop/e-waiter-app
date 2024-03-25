@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Constants from "expo-constants";
-import { Alert, Text, View } from "react-native";
-import firebase, { auth } from "../../../database/firebase";
+import { Alert, View } from "react-native";
+import firebase from "../../../database/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import SecondaryHeader from "../navigation/SecondaryHeader";
 import UserAvatar from "react-native-user-avatar";
 import CustomInput from "../formComponents/CustomInput";
 import ProfileOption from "./ProfileOption";
+import { deleteUser, getAuth } from "firebase/auth";
 
 const ProfileDetails = ({navigation}) => {
   const [save, setSave] = useState(false)
@@ -72,6 +73,31 @@ const ProfileDetails = ({navigation}) => {
     updateUser()
   }
 
+  const onPress = (page, navigation) => {
+    navigation.navigate(page);
+  }
+
+  const onDeleteUser = () => {
+    console.log("voy a borrar....")
+    Alert.alert("Atención", "Se va a eliminar la cuenta", [
+      {
+        text: 'Cancel',
+        onPress: async() => console.log("Delete Account Canceled")
+      },
+      {
+        text: 'Ok',
+        onPress: async() => {
+          try{
+            await deleteUser(firebase.auth.currentUser).then(() => console.log("User deleted..."))
+          }catch(error) {
+            console.log(error)
+          }
+        }
+      }
+    ]);
+   
+  }
+
   return (
     <View style={styles.container}>
       <SecondaryHeader
@@ -111,8 +137,8 @@ const ProfileDetails = ({navigation}) => {
         />
       </View>
       <View style={styles.options}>
-        <ProfileOption navigation={navigation} title="Cambiar contraseña" page={"ChangePassword"}/>
-        <ProfileOption navigation={navigation} title="Eliminar mi cuenta" />
+        <ProfileOption navigation={navigation} title="Cambiar contraseña" onPressAction={() => onPress("ChangePassword",navigation)}/>
+        <ProfileOption navigation={navigation} title="Eliminar mi cuenta" onPressAction={() => onDeleteUser(user)}/>
       </View>
     </View>
   );
