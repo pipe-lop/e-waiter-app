@@ -112,6 +112,7 @@ const ProfileDetails = ({navigation}) => {
         onPress={() => {
             onPressSave()
         }}
+        navigation={navigation}
       />
       <View style={styles.row}>
         <UserAvatar

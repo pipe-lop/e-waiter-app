@@ -6,9 +6,9 @@ import theme from '../../theme';
 const SecondaryHeader = ({navigation, title, save, onPress}) => {
   return (
     <View style={styles.row}>
-      <View style={[styles.col_icon]}>
+      <Pressable style={[styles.col_icon]} onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back" size={27} />
-      </View>
+      </Pressable>
       <View style={[styles.col_title]}>
         <Text style={styles.text}>{title}</Text>
       </View>

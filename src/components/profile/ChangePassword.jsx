@@ -7,7 +7,7 @@ import theme from "../../theme";
 import { EmailAuthProvider, reauthenticateWithCredential, updatePassword } from "firebase/auth";
 import firebase from "../../../database/firebase";
 
-const ChangePassword = () => {
+const ChangePassword = ({navigation}) => {
   const emptyPasswords = {
     oldPassword: "",
     newPassword: "",
@@ -41,7 +41,7 @@ const ChangePassword = () => {
   };
   return (
     <View style={styles.container}>
-      <SecondaryHeader title={"Datos personales"} save={false} />
+      <SecondaryHeader title={"Datos personales"} save={false} navigation={navigation}/>
       <View>
         <CustomInput
           placeholder={"Contraseña actual"}
