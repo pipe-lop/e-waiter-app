@@ -1,3 +1,4 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
 import { Image, View, Pressable} from "react-native";
 import UserAvatar from "react-native-user-avatar";
@@ -6,6 +7,9 @@ const Navbar = ({navigation}) => {
   const onPress = (page) => navigation.navigate(page);
   return (
     <View style={styles.row}>
+      <Pressable style={[styles.col_icon]} onPress={() => onPress("SecondaryNavbar")}>
+        <Ionicons name="menu" size={27} />
+      </Pressable>
       <Pressable style={styles.col_2_of_3} onPress={() => onPress("Home")}>
         <Image style={styles.logo} source={require("../../assets/logo.png")}/>
       </Pressable>
@@ -28,16 +32,22 @@ const styles = {
   row: {
     flexDirection: 'row',
     marginHorizontal: 20,
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  col_icon: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    width: '16%'
   },
   col_1_of_3: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    width: '33%'
+    width: '16%'
   },
   col_2_of_3: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     width: '67%'
   }
 

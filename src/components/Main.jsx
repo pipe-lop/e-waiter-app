@@ -16,6 +16,7 @@ import Profile from "./profile/Profile.jsx"
 import ProfileDetails from "./profile/ProfileDetails.jsx";
 import ChangePassword from "./profile/ChangePassword.jsx";
 import ForgottenPassword from "./access/ForgottenPassword.jsx";
+import SecondaryNavbar from "./navigation/SecondaryNavbar.jsx";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,7 @@ function InsideLayout() {
       <InsideStack.Screen name="Profile" component={Profile} />
       <InsideStack.Screen name="ProfileDetails" component={ProfileDetails} />
       <InsideStack.Screen name="ChangePassword" component={ChangePassword} />
+      <InsideStack.Screen name="SecondaryNavbar" component={SecondaryNavbar} />
     </InsideStack.Navigator>
   );
 }
