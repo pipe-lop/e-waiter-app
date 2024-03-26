@@ -12,6 +12,10 @@ import { onAuthStateChanged } from "firebase/auth";
 import firebase from "../../database/firebase.js";
 import Login from "./access/Login.jsx";
 import Register from "./access/Register.jsx";
+import Profile from "./profile/Profile.jsx"
+import ProfileDetails from "./profile/ProfileDetails.jsx";
+import ChangePassword from "./profile/ChangePassword.jsx";
+import ForgottenPassword from "./access/ForgottenPassword.jsx";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +28,9 @@ function InsideLayout() {
       <InsideStack.Screen name="Home" component={Home} />
       <InsideStack.Screen name="ItemDetail" component={ItemDetail} />
       <InsideStack.Screen name="CategoryItems" component={CategoryItems} />
+      <InsideStack.Screen name="Profile" component={Profile} />
+      <InsideStack.Screen name="ProfileDetails" component={ProfileDetails} />
+      <InsideStack.Screen name="ChangePassword" component={ChangePassword} />
     </InsideStack.Navigator>
   );
 }
@@ -32,6 +39,7 @@ function OutsideLayout() {
     <Stack.Navigator screenOptions={{headerShown:false}}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="ForgottenPassword" component={ForgottenPassword} />
     </Stack.Navigator>
   );
 }

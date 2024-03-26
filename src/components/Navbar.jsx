@@ -3,15 +3,15 @@ import { Image, View, Pressable} from "react-native";
 import UserAvatar from "react-native-user-avatar";
 
 const Navbar = ({navigation}) => {
-  const onPress = () => navigation.navigate('Home');
+  const onPress = (page) => navigation.navigate(page);
   return (
     <View style={styles.row}>
-      <Pressable style={styles.col_2_of_3} onPress={onPress}>
+      <Pressable style={styles.col_2_of_3} onPress={() => onPress("Home")}>
         <Image style={styles.logo} source={require("../../assets/logo.png")}/>
       </Pressable>
-      <View style={styles.col_1_of_3}>
+      <Pressable style={styles.col_1_of_3} onPress={() => onPress("Profile")}>
         <UserAvatar size={30} style={styles.perfil} bgColor="#101B1C" name={"Andres"} />
-      </View>
+      </Pressable>
     </View>
   );
 };
