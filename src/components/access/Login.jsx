@@ -52,7 +52,7 @@ const Login = ({ navigation }) => {
         user.password
       );
     } catch (error) {
-      Alert.alert("No se ha podido iniciar sesión: " + error.message);
+      Alert.alert("No se ha podido iniciar sesión: ", error.message);
     } finally {
       setLoading(false);
     }
