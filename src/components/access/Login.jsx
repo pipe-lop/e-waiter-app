@@ -100,12 +100,8 @@ const styles = {
     flexGrow: 1,
     justifyContent: "space-between",
   },
-  header: {
-    backgroundColor: theme.colors.blue
-  },
-  body: {
-    backgroundColor: theme.colors.yellow
-  },
+  header: {},
+  body: {},
   form: {
     marginTop: 50,
     marginBottom: 80,
@@ -114,7 +110,6 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 50,
-    backgroundColor: theme.colors.red,
   },
 };
 
