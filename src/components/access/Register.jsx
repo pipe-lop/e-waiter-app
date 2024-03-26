@@ -116,16 +116,19 @@ const Register = ({ navigation }) => {
               name={"Email"}
               onChangeHandler={(value) => handleChangeText("email", value)}
               secureTextEntry={false}
+              autoCapitalize={"none"}
             />
             <CustomInput
               name={"Contraseña"}
               onChangeHandler={(value) => handleChangePassword(value)}
               secureTextEntry={true}
+              autoCapitalize={"none"}
             />
             <CustomInput
               name={"Repetir contraseña"}
               onChangeHandler={(value) => handleRepeatPassword(value)}
               secureTextEntry={true}
+              autoCapitalize={"none"}
             />
           </View>
           {loading ? (

@@ -21,6 +21,7 @@ const emailForm = (handler, value) => {
           value={value}
           secureTextEntry={false}
           placeholder={"ewaiter@mail.com"}
+          autoCapitalize={"none"}
         />
       </View>
     </View>

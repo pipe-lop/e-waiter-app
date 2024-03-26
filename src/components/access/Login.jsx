@@ -72,11 +72,13 @@ const Login = ({ navigation }) => {
             name={"Email"}
             onChangeHandler={(value) => handleChangeText("email", value)}
             secureTextEntry={false}
+            autoCapitalize={"none"}
           />
           <CustomInput
             name={"Contraseña"}
             onChangeHandler={(value) => handleChangeText("password", value)}
             secureTextEntry={true}
+            autoCapitalize={"none"}
           />
         </View>
         {loading ? (

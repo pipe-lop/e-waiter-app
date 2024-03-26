@@ -48,19 +48,22 @@ const ChangePassword = () => {
           secureTextEntry={true}
           onChangeHandler={(value) => handleChangeText("oldPassword", value)}
           value={passwords.oldPassword}
-        />
+          autoCapitalize={"none"}
+          />
         <CustomInput
           placeholder={"Contraseña nueva"}
           secureTextEntry={true}
           onChangeHandler={(value) => handleChangeText("newPassword", value)}
           value={passwords.newPassword}
-        />
+          autoCapitalize={"none"}
+          />
         <CustomInput
           placeholder={"Confirmar contraseña nueva"}
           secureTextEntry={true}
           onChangeHandler={(value) => handleChangeText("passwordRepeated", value)}
           value={passwords.passwordRepeated}
-        />
+          autoCapitalize={"none"}
+          />
       </View>
       <View style={[theme.footer]}>
         <TouchableOpacity
