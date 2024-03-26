@@ -3,12 +3,12 @@ import Constants from "expo-constants";
 import { Alert, View } from "react-native";
 import firebase from "../../../database/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import SecondaryHeader from "../navigation/SecondaryHeader";
 import UserAvatar from "react-native-user-avatar";
 import CustomInput from "../formComponents/CustomInput";
 import ProfileOption from "./ProfileOption";
-import { deleteUser, getAuth } from "firebase/auth";
+import { deleteUser } from "firebase/auth";
 
 const ProfileDetails = ({navigation}) => {
   const [save, setSave] = useState(false)
@@ -88,7 +88,12 @@ const ProfileDetails = ({navigation}) => {
         text: 'Ok',
         onPress: async() => {
           try{
-            await deleteUser(firebase.auth.currentUser).then(() => console.log("User deleted..."))
+            await deleteUser(firebase.auth.currentUser).then( async() => {
+              console.log("User deleted...")
+              await deleteDoc(doc(firebase.db, "users", user.id))
+              .then(() => console.log("User info deleted"))
+              .catch((error) => console.log(error))
+            })
           }catch(error) {
             console.log(error)
           }
