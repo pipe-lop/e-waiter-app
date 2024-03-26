@@ -68,22 +68,21 @@ const Register = ({ navigation }) => {
   const singUp = async () => {
     if (isPasswordChecked) {
       setLoading(true);
-      try{
-          const response = await createUserWithEmailAndPassword(
-            auth,
-            user.email,
-            user.password
-          );
-          await setDoc(doc(firebase.db, "users", response.user.uid), {
-            firstName: user.firstName,
-            lastName: user.lastName
-          });
-          Alert.alert("Atención", "El usuario se ha guardado correctamente");
-      }catch(error) {
+      try {
+        const response = await createUserWithEmailAndPassword(
+          auth,
+          user.email,
+          user.password
+        );
+        await setDoc(doc(firebase.db, "users", response.user.uid), {
+          firstName: user.firstName,
+          lastName: user.lastName,
+        });
+        Alert.alert("Atención", "El usuario se ha guardado correctamente");
+      } catch (error) {
         Alert.alert("Atención", "Las contraseñas no coinciden");
-      }
-      finally{
-        setLoading(false)
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -95,46 +94,55 @@ const Register = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView behavior="´height">
-        {/* <AccessHeader title={"Registrarme"} /> */}
-        <AccessHeader title={"Registrarme"} keyboardEnabled={keyboardStatus} />
-
-        <View style={styles.form}>
-          <CustomInput
-            name={"Nombre"}
-            onChangeHandler={(value) => handleChangeText("firstName", value)}
-            secureTextEntry={false}
-          />
-          <CustomInput
-            name={"Apellidos"}
-            onChangeHandler={(value) => handleChangeText("lastName", value)}
-            secureTextEntry={false}
-          />
-          <CustomInput
-            name={"Email"}
-            onChangeHandler={(value) => handleChangeText("email", value)}
-            secureTextEntry={false}
-          />
-          <CustomInput
-            name={"Contraseña"}
-            onChangeHandler={(value) => handleChangePassword(value)}
-            secureTextEntry={true}
-          />
-          <CustomInput
-            name={"Repetir contraseña"}
-            onChangeHandler={(value) => handleRepeatPassword(value)}
-            secureTextEntry={true}
+        <View style={styles.header}>
+          <AccessHeader
+            title={"Registrarme"}
+            keyboardEnabled={keyboardStatus}
           />
         </View>
-        { loading ? <ActivityIndicator size="large" color={theme.colors.fontGrey} /> : <></> }
-        <View style={[theme.footer]}>
-          <TouchableOpacity
-            style={theme.darkButton}
-            onPress={handleRegistrationButton}
-          >
-            <Text style={theme.buttonText}>Registrarme</Text>
-          </TouchableOpacity>
+        <View style={styles.body}>
+          <View style={styles.form}>
+            <CustomInput
+              name={"Nombre"}
+              onChangeHandler={(value) => handleChangeText("firstName", value)}
+              secureTextEntry={false}
+            />
+            <CustomInput
+              name={"Apellidos"}
+              onChangeHandler={(value) => handleChangeText("lastName", value)}
+              secureTextEntry={false}
+            />
+            <CustomInput
+              name={"Email"}
+              onChangeHandler={(value) => handleChangeText("email", value)}
+              secureTextEntry={false}
+            />
+            <CustomInput
+              name={"Contraseña"}
+              onChangeHandler={(value) => handleChangePassword(value)}
+              secureTextEntry={true}
+            />
+            <CustomInput
+              name={"Repetir contraseña"}
+              onChangeHandler={(value) => handleRepeatPassword(value)}
+              secureTextEntry={true}
+            />
+          </View>
+          {loading ? (
+            <ActivityIndicator size="large" color={theme.colors.fontGrey} />
+          ) : (
+            <></>
+          )}
         </View>
       </KeyboardAvoidingView>
+      <View style={[theme.footer]}>
+        <TouchableOpacity
+          style={theme.darkButton}
+          onPress={handleRegistrationButton}
+        >
+          <Text style={theme.buttonText}>Registrarme</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -143,11 +151,12 @@ const styles = {
   container: {
     marginTop: Constants.statusBarHeight,
     flexGrow: 1,
-    justifyContent: "center",
+    justifyContent: "space-between",
   },
+  header: {},
+  body: {},
   form: {
     marginTop: 50,
-    marginBottom: 80,
   },
 };
 

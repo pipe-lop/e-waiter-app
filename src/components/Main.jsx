@@ -15,6 +15,7 @@ import Register from "./access/Register.jsx";
 import Profile from "./profile/Profile.jsx"
 import ProfileDetails from "./profile/ProfileDetails.jsx";
 import ChangePassword from "./profile/ChangePassword.jsx";
+import ForgottenPassword from "./access/ForgottenPassword.jsx";
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +39,7 @@ function OutsideLayout() {
     <Stack.Navigator screenOptions={{headerShown:false}}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="ForgottenPassword" component={ForgottenPassword} />
     </Stack.Navigator>
   );
 }
