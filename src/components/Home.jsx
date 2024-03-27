@@ -7,7 +7,6 @@ import bestSellers from "../data/bestSellers.js";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import firebase from "../../database/firebase.js";
 import theme from "../theme.js";
-import { useSelector } from "react-redux";
 
 const Home = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
@@ -31,8 +30,6 @@ const Home = ({ navigation }) => {
     getCategories();
   }, []);
 
-  const cart = useSelector((state) => state.cart.cart);
-  console.log(cart)
   return (
     <View style={styles.container}>
       <Navbar navigation={navigation} />
