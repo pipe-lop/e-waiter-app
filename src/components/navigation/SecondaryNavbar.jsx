@@ -5,6 +5,7 @@ import { collection, getDocs, orderBy, query } from "@firebase/firestore";
 import firebase from "../../../database/firebase";
 import Constants from "expo-constants";
 import Navbar from "../Navbar";
+import { signOut } from "@firebase/auth";
 
 const SecondaryNavbar = ({ navigation }) => {
   const [categorias, setCategorias] = useState([]);
@@ -20,19 +21,36 @@ const SecondaryNavbar = ({ navigation }) => {
       });
     });
     cts.push({
-        id: 'Profile',
-        nombre: 'Mi perfil'
-    })
+      id: "Profile",
+      nombre: "Mi perfil",
+    });
     cts.push({
-        id: 'Salir',
-        nombre: 'Salir'
-    })
-    console.log(cts)
+      id: "Salir",
+      nombre: "Salir",
+    });
     setCategorias(cts);
   };
   useEffect(() => {
     getCategories();
   }, []);
+  const onPress = (id, navigation) => {
+    if (id === "Profile") {
+      navigation.navigate("Profile");
+    } else if (id === "Salir") {
+      singOut();
+    } else {
+      navigation.navigate("CategoryItems", {
+        id: id,
+      });
+    }
+  };
+  const singOut = async () => {
+    try {
+      await signOut(firebase.auth).then(() => console.log("User signed out!"));
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <View style={styles.container}>
       <Navbar navigation={navigation} />
@@ -41,7 +59,11 @@ const SecondaryNavbar = ({ navigation }) => {
         data={categorias}
         renderItem={({ item: category }) => (
           <View style={styles.option} key={category.id}>
-            <ProfileOption title={category.nombre} />
+            <ProfileOption
+              title={category.nombre}
+              navigation={navigation}
+              onPressAction={() => onPress(category.id, navigation)}
+            />
           </View>
         )}
         numColumns={1}

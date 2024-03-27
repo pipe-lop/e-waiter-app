@@ -6,9 +6,9 @@ const ProfileHeader = ({navigation}) => {
   const onPress = (page) => navigation.navigate(page);
   return (
     <View style={styles.row}>
-      <View style={styles.col_1_of_3}>
+      <Pressable style={styles.col_1_of_3} onPress={() => onPress("SecondaryNavbar")}>
         <Ionicons name="menu" size={27}/>
-      </View>
+      </Pressable>
       <Pressable style={styles.col_2_of_3} onPress={() => onPress("Home")}>
         <Image
           style={styles.logo}
