@@ -12,11 +12,13 @@ import { onAuthStateChanged } from "firebase/auth";
 import firebase from "../../database/firebase.js";
 import Login from "./access/Login.jsx";
 import Register from "./access/Register.jsx";
-import Profile from "./profile/Profile.jsx"
+import Profile from "./profile/Profile.jsx";
 import ProfileDetails from "./profile/ProfileDetails.jsx";
 import ChangePassword from "./profile/ChangePassword.jsx";
 import ForgottenPassword from "./access/ForgottenPassword.jsx";
 import SecondaryNavbar from "./navigation/SecondaryNavbar.jsx";
+import { Provider } from "react-redux";
+import store from "../../store.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,7 +26,7 @@ const InsideStack = createNativeStackNavigator();
 
 function InsideLayout() {
   return (
-    <InsideStack.Navigator screenOptions={{headerShown:false}}>
+    <InsideStack.Navigator screenOptions={{ headerShown: false }}>
       <InsideStack.Screen name="Welcome" component={Welcome} />
       <InsideStack.Screen name="Home" component={Home} />
       <InsideStack.Screen name="ItemDetail" component={ItemDetail} />
@@ -38,7 +40,7 @@ function InsideLayout() {
 }
 function OutsideLayout() {
   return (
-    <Stack.Navigator screenOptions={{headerShown:false}}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="ForgottenPassword" component={ForgottenPassword} />
@@ -56,22 +58,24 @@ const Main = () => {
   }, []);
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Login"
-        screenOptions={{ headerShown: false }}
-      >
-        {user ? (
-          <Stack.Screen
-            name="Inside"
-            component={InsideLayout}
-            options={{ headerShown: false }}
-          />
-        ) : (
-          <Stack.Screen name="Outside" component={OutsideLayout} />
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Login"
+          screenOptions={{ headerShown: false }}
+        >
+          {user ? (
+            <Stack.Screen
+              name="Inside"
+              component={InsideLayout}
+              options={{ headerShown: false }}
+            />
+          ) : (
+            <Stack.Screen name="Outside" component={OutsideLayout} />
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 };
 
