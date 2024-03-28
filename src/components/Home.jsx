@@ -7,6 +7,7 @@ import bestSellers from "../data/bestSellers.js";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import firebase from "../../database/firebase.js";
 import theme from "../theme.js";
+import MyOrderButton from "./order/MyOrderButton.jsx";
 
 const Home = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
@@ -33,6 +34,9 @@ const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Navbar navigation={navigation} />
+      <View style={[styles.row, {justifyContent: "flex-end", paddingHorizontal: 20}]}>
+        <MyOrderButton/>
+      </View>
       <View style={styles.row}>
         <Text>Lo mas vendido</Text>
       </View>

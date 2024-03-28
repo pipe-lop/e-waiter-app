@@ -18,6 +18,14 @@ const theme = {
     justifyContent: "center",
     marginTop: 10
   },
+  redButton: {
+    backgroundColor: "#CE0000",
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 6,
+    paddingHorizontal: 12
+  },
   buttonText: {
     color: "#DDDDDD",
     fontSize: 20,
