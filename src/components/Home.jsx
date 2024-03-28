@@ -38,7 +38,7 @@ const Home = ({ navigation }) => {
         <MyOrderButton/>
       </View>
       <View style={styles.row}>
-        <Text>Lo mas vendido</Text>
+        <Text style={[{fontSize: theme.fontSizes.h3}]}>Lo más vendido</Text>
       </View>
       <View style={styles.row}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -55,7 +55,7 @@ const Home = ({ navigation }) => {
         </ScrollView>
       </View>
       <View style={styles.row}>
-        <Text>Categorias</Text>
+        <Text style={[{fontSize: theme.fontSizes.h3}]}>Categorías</Text>
       </View>
       {loading ? (
         <ActivityIndicator size="large" color={theme.colors.fontGrey} />
