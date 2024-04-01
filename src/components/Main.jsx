@@ -19,6 +19,7 @@ import ForgottenPassword from "./access/ForgottenPassword.jsx";
 import SecondaryNavbar from "./navigation/SecondaryNavbar.jsx";
 import { Provider } from "react-redux";
 import store from "../../store.js";
+import MyOrder from "./order/MyOrder.jsx";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,7 @@ function InsideLayout() {
       <InsideStack.Screen name="ProfileDetails" component={ProfileDetails} />
       <InsideStack.Screen name="ChangePassword" component={ChangePassword} />
       <InsideStack.Screen name="SecondaryNavbar" component={SecondaryNavbar} />
+      <InsideStack.Screen name="MyOrder" component={MyOrder} />
     </InsideStack.Navigator>
   );
 }

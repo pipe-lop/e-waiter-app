@@ -29,7 +29,7 @@ export const CartSlice = createSlice({
                 (item) => item.id === action.payload.id
             );
             if(itemPresent.quantity === 1) {
-                itemPresent = 0;
+                itemPresent.quantity = 0;
                 const removeItem = state.cart.filter(
                     (item) => item.id !== action.payload.id
                 );

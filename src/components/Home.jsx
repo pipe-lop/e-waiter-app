@@ -35,7 +35,7 @@ const Home = ({ navigation }) => {
     <View style={styles.container}>
       <Navbar navigation={navigation} />
       <View style={[styles.row, {justifyContent: "flex-end", paddingHorizontal: 20}]}>
-        <MyOrderButton/>
+        <MyOrderButton onPress={() => navigation.navigate("MyOrder")}/>
       </View>
       <View style={styles.row}>
         <Text style={[{fontSize: theme.fontSizes.h3}]}>Lo más vendido</Text>
