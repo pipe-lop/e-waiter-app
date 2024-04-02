@@ -48,7 +48,7 @@ const MyOrder = ({ navigation }) => {
       </View>
       <View style={styles.total}>
         <View style={{flex: 1, justifyContent: "center", alignItems:"center"}}>
-            <Text>Mi pedidos en curso</Text>
+            <Text>Mi pedido en curso</Text>
         </View>
         <View style={theme.redButton}>
             <Text style={theme.buttonText}>Total {totalCart}€</Text>
