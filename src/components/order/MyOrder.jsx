@@ -19,7 +19,7 @@ const MyOrder = ({ navigation }) => {
     }
     useEffect(() => {
         if(cart.length > 0) {
-            setTotalCart(cart.reduce((acc, item) => acc + (item.precio * item.quantity), 0,))
+            setTotalCart(Math.round((cart.reduce((acc, item) => acc + (item.precio * item.quantity), 0,)) * 100) / 100)
         } else {
             setTotalCart(0)
         }
