@@ -7,6 +7,7 @@ import bestSellers from "../data/bestSellers.js";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import firebase from "../../database/firebase.js";
 import theme from "../theme.js";
+import MyOrderButton from "./order/MyOrderButton.jsx";
 
 const Home = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
@@ -29,11 +30,15 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     getCategories();
   }, []);
+
   return (
     <View style={styles.container}>
       <Navbar navigation={navigation} />
+      <View style={[styles.row, {justifyContent: "flex-end", paddingHorizontal: 20}]}>
+        <MyOrderButton onPress={() => navigation.navigate("MyOrder")}/>
+      </View>
       <View style={styles.row}>
-        <Text>Lo mas vendido</Text>
+        <Text style={[{fontSize: theme.fontSizes.h3}]}>Lo más vendido</Text>
       </View>
       <View style={styles.row}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -50,7 +55,7 @@ const Home = ({ navigation }) => {
         </ScrollView>
       </View>
       <View style={styles.row}>
-        <Text>Categorias</Text>
+        <Text style={[{fontSize: theme.fontSizes.h3}]}>Categorías</Text>
       </View>
       {loading ? (
         <ActivityIndicator size="large" color={theme.colors.fontGrey} />
