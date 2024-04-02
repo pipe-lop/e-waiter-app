@@ -1,5 +1,5 @@
 import { FlatList, Pressable, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Constants from "expo-constants";
 import theme from "../../theme";
 import Navbar from "../Navbar";
@@ -17,6 +17,14 @@ const MyOrder = ({ navigation }) => {
     const decrementItemQuantity = (item) => {
         dispatch(decrementQuantity(item))
     }
+    useEffect(() => {
+        if(cart.length > 0) {
+            setTotalCart(cart.reduce((acc, item) => acc + (item.precio * item.quantity), 0,))
+        } else {
+            setTotalCart(0)
+        }
+    }, [cart])
+    
   return (
     <View style={styles.container}>
       <View style={[theme.header]}>
@@ -40,7 +48,7 @@ const MyOrder = ({ navigation }) => {
       </View>
       <View style={styles.total}>
         <View style={{flex: 1, justifyContent: "center", alignItems:"center"}}>
-            <Text>Mis pedidos en curso</Text>
+            <Text>Mi pedidos en curso</Text>
         </View>
         <View style={theme.redButton}>
             <Text style={theme.buttonText}>Total {totalCart}€</Text>
