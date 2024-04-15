@@ -25,11 +25,11 @@ const SecondaryHeader = ({navigation, title, save, onPress}) => {
 
 const styles = {
     text: {
-        fontSize: theme.fontSizes.h3,
+        fontSize: theme.fontSizes.h4,
         fontWeight: "bold"
     },
     textSave: {
-        fontSize: theme.fontSizes.h3,
+        fontSize: theme.fontSizes.h4,
         color: theme.colors.fontGrey
     },
     row: {
