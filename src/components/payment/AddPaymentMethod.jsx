@@ -6,14 +6,17 @@ import CustomInput from "../formComponents/CustomInput";
 import { onAuthStateChanged } from "@firebase/auth";
 import firebase from "../../../database/firebase";
 import { doc, getDoc } from "@firebase/firestore";
+import { FormProvider, useForm } from "react-hook-form";
+import FormCustomInput from "../formComponents/FormCustomInput";
+import theme from "../../theme";
 
 const AddPaymentMethod = ({ navigation }) => {
-    const [card, setCard] = useState({
-        number: "",
-        expMounth: "",
-        expYear: "",
-        cvv: ""
-    })
+  const [card, setCard] = useState({
+    number: "",
+    expMounth: "",
+    expYear: "",
+    cvv: "",
+  });
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -45,37 +48,31 @@ const AddPaymentMethod = ({ navigation }) => {
           });
       }
     });
-  }, []);
-
+  });
+  const formMethods = useForm({
+    defaultValues: {
+      holderName: "",
+      cardNumber: "",
+      expiration: "",
+      cvv: "",
+    },
+  });
   return (
     <View style={styles.container}>
       <SecondaryHeader title={"Añade una tarjeta"} navigation={navigation} />
       <View style={styles.body}>
-        <CustomInput
-          name={"Nombre"}
-          value={user.firstName + " " + user.lastName}
-          onChangeHandler={(value) => handleChangeText("firstName", value)}
-          secureTextEntry={false}
-        />
-        <CustomInput
-          name={"Número de tarjeta"}
-          value={card.number}
-          onChangeHandler={(value) => handleChangeText("firstName", value)}
-          secureTextEntry={false}
-        />
-        <CustomInput
-          name={"Fecha de caducidad"}
-          value={card.endDate}
-          onChangeHandler={(value) => handleChangeText("firstName", value)}
-          secureTextEntry={false}
-          placeholder={"MM/AA"}
-        />
-        <CustomInput
-          name={"CVV"}
-          value={card.cvv}
-          onChangeHandler={(value) => handleChangeText("firstName", value)}
-          secureTextEntry={false}
-        />
+        <FormProvider {...formMethods}>
+          <FormCustomInput name="holderName" label="Nombre completo" />
+          <FormCustomInput name="cardNumber" label="Número de la tarjeta" />
+          <View style={styles.row}>
+            <View style={styles.col}>
+              <FormCustomInput name="expiration" label="Fecha de caducidad" placeholder="MM/AA"/>
+            </View>
+            <View style={styles.col}>
+              <FormCustomInput name="cvv" label="CVV" />
+            </View>
+          </View>
+        </FormProvider>
         <Text>AddPaymentMethod</Text>
       </View>
     </View>
@@ -93,5 +90,16 @@ const styles = {
     paddingTop: 50,
     justifyContent: "center",
     alignItems: "center",
+    paddingHorizontal: 10
+  },
+  row: {
+    width: "100%",
+    flexDirection: "row",
+    flexWarp: "warp",
+    alignItems: "space-between",
+    justifyContent: "space-between",
+  },
+  col: {
+    width: "49%",
   },
 };
