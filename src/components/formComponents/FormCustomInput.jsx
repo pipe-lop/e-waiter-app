@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import CustomInput from './CustomInput'
 
-const FormCustomInput = ((props) => {
+const FormCustomInput = React.forwardRef((props, ref) => {
     const {
         name,
         rules,
@@ -38,6 +38,7 @@ const FormCustomInput = ((props) => {
         render={({field}) => (
             <CustomInput
                 {...restOfProps}
+                ref={ref}
                 name={label}
                 placeholder={placeholder}
                 value={field.value}

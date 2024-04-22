@@ -2,11 +2,14 @@ import React from "react";
 import { Text, TextInput, View } from "react-native";
 import theme from "../../theme";
 
-const CustomInput = ({ name, secureTextEntry, value, onChangeHandler, placeholder, editable, autoCapitalize }) => {
+const CustomInput = React.forwardRef((props, ref) => {
+  const { name, secureTextEntry, value, onChangeHandler, placeholder, editable, autoCapitalize, ...restOfProps } = props
   return (
     <View style={styles.container}>
       <Text style={styles.fontHeader}>{name}</Text>
       <TextInput 
+        {...restOfProps}
+        ref={ref}
         style={styles.fontInput} 
         secureTextEntry={secureTextEntry}
         value={value}
@@ -17,7 +20,7 @@ const CustomInput = ({ name, secureTextEntry, value, onChangeHandler, placeholde
         />
     </View>
   );
-};
+});
 
 const styles = {
   container: {

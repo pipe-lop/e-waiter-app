@@ -35,7 +35,7 @@ const Profile = ({ navigation }) => {
       </View>
       <View style={styles.options}>
         <ProfileOption navigation={navigation} title="Mis pedidos"/>
-        <ProfileOption navigation={navigation} title="Métodos de pago"/>
+        <ProfileOption navigation={navigation} title="Métodos de pago" onPressAction={() => onPress("SelectPaymentMethod", navigation)}/>
         <ProfileOption navigation={navigation} title="Datos personales" onPressAction={() => onPress("ProfileDetails", navigation)}/>
         <ProfileOption navigation={navigation} title="Cerrar sesión" onPressAction={() => singOut()}/>
       </View>

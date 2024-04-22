@@ -1,55 +1,30 @@
 import { Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SecondaryHeader from "../navigation/SecondaryHeader";
 import Constants from "expo-constants";
-import CustomInput from "../formComponents/CustomInput";
 import { onAuthStateChanged } from "@firebase/auth";
 import firebase from "../../../database/firebase";
-import { doc, getDoc } from "@firebase/firestore";
+import { addDoc, collection } from "@firebase/firestore";
 import { FormProvider, useForm } from "react-hook-form";
-import FormCustomInput from "../formComponents/FormCustomInput";
+import PaymentMethodForm from "./PaymentMethodForm";
+import Button from "../formComponents/Button";
+import { Alert } from "react-native";
 import theme from "../../theme";
+import { cardNumber } from "card-validator/dist/card-number";
+import Toast from "react-native-root-toast";
 
 const AddPaymentMethod = ({ navigation }) => {
-  const [card, setCard] = useState({
-    number: "",
-    expMounth: "",
-    expYear: "",
-    cvv: "",
-  });
-  const [user, setUser] = useState({
-    firstName: "",
-    lastName: "",
-    id: "",
-  });
-  const getUserExtended = async (userId) => {
-    const docRef = doc(firebase.db, "users", userId);
-    const data = await getDoc(docRef)
-      .then((data) => {
-        return data.data();
-      })
-      .catch((error) => console.log("getUserExtended", error));
-    return data;
-  };
+  const [userId, setUserId] = useState("")
   useEffect(() => {
     onAuthStateChanged(firebase.auth, (user) => {
       if (user != null) {
-        getUserExtended(user.uid)
-          .then((data) => {
-            setUser({
-              ...user,
-              id: user.uid,
-              firstName: data.firstName,
-              lastName: data.lastName,
-            });
-          })
-          .catch((error) => {
-            console.log("useEffect", error);
-          });
+        setUserId(user.uid)
       }
     });
-  });
+  }, []);
+
   const formMethods = useForm({
+    mode: "onBlur",
     defaultValues: {
       holderName: "",
       cardNumber: "",
@@ -57,23 +32,50 @@ const AddPaymentMethod = ({ navigation }) => {
       cvv: "",
     },
   });
+
+  const saveMethod = async () =>{
+    try{
+      await addDoc(collection(firebase.db, "paymentMethods"), {
+        userId: userId,
+        holderName: formMethods.getValues('holderName'),
+        cardNumber: formMethods.getValues('cardNumber'),
+        expiration: formMethods.getValues('expiration'),
+        cvv: formMethods.getValues('cvv')
+      }).then((data) => {console.log(data)})
+    } catch (e) {
+      Alert.alert('Error', e.getMessage())
+    }
+  }
+
+  function onSubmit() {
+    saveMethod().then(() => {
+      formMethods.reset()
+      Toast.show('Se ha añadido el método de pago',{
+        duration: Toast.durations.SHORT,
+      })
+      navigation.goBack()
+    })
+  }
+
+  const { handleSubmit, formState } = formMethods;
+
   return (
     <View style={styles.container}>
       <SecondaryHeader title={"Añade una tarjeta"} navigation={navigation} />
       <View style={styles.body}>
         <FormProvider {...formMethods}>
-          <FormCustomInput name="holderName" label="Nombre completo" />
-          <FormCustomInput name="cardNumber" label="Número de la tarjeta" />
-          <View style={styles.row}>
-            <View style={styles.col}>
-              <FormCustomInput name="expiration" label="Fecha de caducidad" placeholder="MM/AA"/>
-            </View>
-            <View style={styles.col}>
-              <FormCustomInput name="cvv" label="CVV" />
-            </View>
+          <View>
+            <PaymentMethodForm />
           </View>
+          {formState.isValid && (
+            <View style={theme.footer}>
+              <Button
+                title="Añadir método de pago"
+                onPress={handleSubmit(onSubmit)}
+              />
+            </View>
+          )}
         </FormProvider>
-        <Text>AddPaymentMethod</Text>
       </View>
     </View>
   );
@@ -87,19 +89,7 @@ const styles = {
     flex: 1,
   },
   body: {
-    paddingTop: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 10
-  },
-  row: {
-    width: "100%",
-    flexDirection: "row",
-    flexWarp: "warp",
-    alignItems: "space-between",
-    justifyContent: "space-between",
-  },
-  col: {
-    width: "49%",
-  },
+    flex: 1,
+    justifyContent: 'space-between'
+  }
 };
