@@ -41,7 +41,7 @@ const AddPaymentMethod = ({ navigation }) => {
         cardNumber: formMethods.getValues('cardNumber'),
         expiration: formMethods.getValues('expiration'),
         cvv: formMethods.getValues('cvv')
-      }).then((data) => {console.log(data)})
+      })
     } catch (e) {
       Alert.alert('Error', e.getMessage())
     }
