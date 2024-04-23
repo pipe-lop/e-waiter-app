@@ -1,24 +1,23 @@
-import { Text, View } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import { View } from "react-native";
+import React, { useEffect, useState } from "react";
 import SecondaryHeader from "../navigation/SecondaryHeader";
 import Constants from "expo-constants";
 import { onAuthStateChanged } from "@firebase/auth";
 import firebase from "../../../database/firebase";
-import { addDoc, collection } from "@firebase/firestore";
+import { addDoc, collection, query, where, getDocs} from "@firebase/firestore";
 import { FormProvider, useForm } from "react-hook-form";
 import PaymentMethodForm from "./PaymentMethodForm";
 import Button from "../formComponents/Button";
 import { Alert } from "react-native";
 import theme from "../../theme";
-import { cardNumber } from "card-validator/dist/card-number";
 import Toast from "react-native-root-toast";
 
 const AddPaymentMethod = ({ navigation }) => {
-  const [userId, setUserId] = useState("")
+  const [userId, setUserId] = useState("");
   useEffect(() => {
     onAuthStateChanged(firebase.auth, (user) => {
       if (user != null) {
-        setUserId(user.uid)
+        setUserId(user.uid);
       }
     });
   }, []);
@@ -33,31 +32,49 @@ const AddPaymentMethod = ({ navigation }) => {
     },
   });
 
-  const saveMethod = async () =>{
-    try{
-      await addDoc(collection(firebase.db, "paymentMethods"), {
-        userId: userId,
-        holderName: formMethods.getValues('holderName'),
-        cardNumber: formMethods.getValues('cardNumber'),
-        expiration: formMethods.getValues('expiration'),
-        cvv: formMethods.getValues('cvv')
-      })
+  const saveMethod = async () => {
+    try {
+      const createNewDoc = await checkMethod(
+        formMethods.getValues("cardNumber"),
+        userId
+      );
+      if (createNewDoc) {
+        await addDoc(collection(firebase.db, "paymentMethods"), {
+          owner: userId,
+          holderName: formMethods.getValues("holderName"),
+          cardNumber: formMethods.getValues("cardNumber"),
+          expiration: formMethods.getValues("expiration"),
+          cvv: formMethods.getValues("cvv"),
+        })
+      }
     } catch (e) {
-      Alert.alert('Error', e.getMessage())
     }
-  }
+  };
 
   function onSubmit() {
     saveMethod().then(() => {
-      formMethods.reset()
-      Toast.show('Se ha añadido el método de pago',{
+      formMethods.reset();
+      Toast.show("Se ha añadido el método de pago", {
         duration: Toast.durations.SHORT,
-      })
-      navigation.goBack()
-    })
+      });
+      navigation.goBack();
+    });
   }
 
   const { handleSubmit, formState } = formMethods;
+
+  const checkMethod = async (cnumber, owner) => {
+    try {
+      const q = query(
+        collection(firebase.db, "paymentMethods"),
+        where("cardNumber", "==", cnumber),
+        where("owner", "==", owner)
+      );
+      const querySnapshot = await getDocs(q);
+      return querySnapshot.empty
+    } catch (e) {
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -90,6 +107,6 @@ const styles = {
   },
   body: {
     flex: 1,
-    justifyContent: 'space-between'
-  }
+    justifyContent: "space-between",
+  },
 };
