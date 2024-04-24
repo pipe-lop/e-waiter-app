@@ -1,4 +1,4 @@
-import { Keyboard, StyleSheet, Text, View } from "react-native";
+import { Keyboard, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import cardValidator from "card-validator";

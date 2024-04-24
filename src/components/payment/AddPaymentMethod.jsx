@@ -8,9 +8,9 @@ import { addDoc, collection, query, where, getDocs} from "@firebase/firestore";
 import { FormProvider, useForm } from "react-hook-form";
 import PaymentMethodForm from "./PaymentMethodForm";
 import Button from "../formComponents/Button";
-import { Alert } from "react-native";
 import theme from "../../theme";
 import Toast from "react-native-root-toast";
+import cardValidator from "card-validator";
 
 const AddPaymentMethod = ({ navigation }) => {
   const [userId, setUserId] = useState("");
@@ -34,6 +34,7 @@ const AddPaymentMethod = ({ navigation }) => {
 
   const saveMethod = async () => {
     try {
+      const {card} = cardValidator.number(formMethods.getValues('cardNumber'))
       const createNewDoc = await checkMethod(
         formMethods.getValues("cardNumber"),
         userId
@@ -45,6 +46,7 @@ const AddPaymentMethod = ({ navigation }) => {
           cardNumber: formMethods.getValues("cardNumber"),
           expiration: formMethods.getValues("expiration"),
           cvv: formMethods.getValues("cvv"),
+          type: card?.type
         })
       }
     } catch (e) {

@@ -1,14 +1,101 @@
-import { Pressable, Text, View } from "react-native";
-import React from "react";
+import { ActivityIndicator, Pressable, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
 import Contants from "expo-constants";
 import SecondaryHeader from "../navigation/SecondaryHeader";
 import PaymentItem from "./PaymentItem";
 import theme from "../../theme";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import firebase from "../../../database/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { FlatList } from "react-native";
 
 const SelectPaymentMethod = ({ navigation }) => {
+  const [pmethods, setPmethods] = useState([]);
+  const [userId, setUserId] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState(null)
+
+  useEffect(() => {
+    onAuthStateChanged(firebase.auth, (user) => {
+      if (user != null) {
+        setUserId(user.uid);
+      }
+    });
+    if(userId != null && pmethods.length == 0){
+      getPMethods(userId)
+    }
+  }, [userId, pmethods]);
+
+  const getPMethods = async (id) => {
+    try {
+      const q = query(
+        collection(firebase.db, "paymentMethods"),
+        where("owner", "==", id)
+      );
+      const querySnapshot = await getDocs(q);
+      console.log(querySnapshot.size)
+      const methods = [];
+      querySnapshot.forEach((doc) => {
+        const { cardNumber, expiration, cvv, type } = doc.data();
+        methods.push({
+          id: doc.id,
+          cardNumber,
+          expiration,
+          cvv,
+          type,
+        });
+      });
+      if (methods.length > 0) {
+        setLoading(false);
+        setPmethods(methods);
+      }
+    } catch (e) {
+      console.log("Error pmethods: ", e);
+    }
+  };
+
+  const getTitle = (type) => {
+    switch (type) {
+      case "maestro":
+        return "Maestro";
+      case "mastercard":
+        return "Mastercard";
+      case "visa":
+        return "VISA";
+      default:
+        return "Tarjeta de credito";
+    }
+  };
+
+  const getType = (type) => {
+    switch (type) {
+      case "maestro":
+        return "maestro";
+      case "mastercard":
+        return "mastercard";
+      case "visa":
+        return "visa";
+      default:
+        return "other";
+    }
+  };
+
+  const onSelectHandler = (id) => {
+    setSelected(id)
+  }
+
   const handlePay = () => {
     console.log("pagando...");
   };
+
+  const data = [
+    {
+      id: 1,
+      title: "Maestro",
+      cardNumber: "4444 4444 4444 4444",
+      type: "maestro",
+    }
+  ]
   return (
     <View style={styles.container}>
       <SecondaryHeader
@@ -16,9 +103,30 @@ const SelectPaymentMethod = ({ navigation }) => {
         navigation={navigation}
       />
       <View style={styles.body}>
-        <PaymentItem />
+        {loading ? (
+          <ActivityIndicator size="large" color={theme.colors.fontGrey} />
+        ) : (
+          <FlatList
+            data={pmethods}
+            keyboardShouldPersistTaps={"handled"}
+            renderItem={({ item }) => (
+              <PaymentItem
+                title={getTitle(item.type)}
+                icon={getType(item.type)}
+                number={item.cardNumber}
+                selected={selected === item.id}
+                onSelect={() => onSelectHandler(item.id)}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+            extraData={selected}
+          />
+        )}
       </View>
-      <Pressable style={styles.links} onPress={() => navigation.navigate("AddPaymentMethod")}>
+      <Pressable
+        style={styles.links}
+        onPress={() => navigation.navigate("AddPaymentMethod")}
+      >
         <Text>Añadir método de pago</Text>
       </Pressable>
       <View style={[theme.footer]}>
@@ -47,6 +155,6 @@ const styles = {
   links: {
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 15
-  }
+    marginVertical: 15,
+  },
 };

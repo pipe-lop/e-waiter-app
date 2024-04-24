@@ -1,23 +1,37 @@
-import { Text, View } from "react-native";
-import React from "react";
+import { Pressable, Text, View } from "react-native";
+import React, { useEffect } from "react";
 import theme from "../../theme";
 import Fontisto from '@expo/vector-icons/Fontisto'
 
-const PaymentItem = ({ title, number }) => {
+const PaymentItem = ({ title, number, icon, selected, onSelect }) => {
+  const mapCards = new Map([
+    ['maestro', 'mastercard'],
+    ['mastercard','mastercard'],
+    ['visa','visa'],
+    ['other','credit-card']
+  ]);
+
+  const getNumber = (number) => {
+    return number.replace(number.substring(5,14), '**** ****');
+  }
+
+  useEffect(() => {
+  }, [])
+  
   return (
-    <View style={styles.container}>
+    <Pressable style={[styles.container, selected ? styles.selected : ""]} onPress={onSelect}>
       <View style={styles.icon_col}>
-        <Fontisto name="visa" size={26}/>
+        <Fontisto name={mapCards.get(icon)} size={26}/>
       </View>
       <View style={styles.text_col}>
         <View>
-          <Text>VISA</Text>
+          <Text>{title}</Text>
         </View>
         <View>
-          <Text>421982XXXXXXX2541</Text>
+          <Text>{getNumber(number)}</Text>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
@@ -42,4 +56,7 @@ const styles = {
   text_col: {
     width: "80%",
   },
+  selected: {
+    borderWidth: 2
+  }
 };
