@@ -8,12 +8,15 @@ import firebase from "../../../database/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { FlatList } from "react-native";
 import PressablePaymentItem from "./PressablePaymentItem";
+import { useIsFocused } from "@react-navigation/native";
 
 const SelectPaymentMethod = ({ navigation }) => {
   const [pmethods, setPmethods] = useState([]);
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null)
+
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     onAuthStateChanged(firebase.auth, (user) => {
@@ -24,7 +27,10 @@ const SelectPaymentMethod = ({ navigation }) => {
     if(userId != null && pmethods.length == 0){
       getPMethods(userId)
     }
-  }, [userId, pmethods]);
+    if(userId != null && isFocused){
+      getPMethods(userId)
+    }
+  }, [userId, pmethods, isFocused]);
 
   const getPMethods = async (id) => {
     try {
