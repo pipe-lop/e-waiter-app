@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, FlatList, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
 import Constants from "expo-constants";
 import HomeItem from "./HomeItem";
 import Navbar from "./Navbar";
@@ -24,21 +30,26 @@ const Home = ({ navigation }) => {
         imagen,
       });
       setCategorias(cts);
-      setLoading(false)
+      setLoading(false);
     });
   };
   useEffect(() => {
-    getCategories();
+    // getCategories();
   }, []);
 
   return (
     <View style={styles.container}>
       <Navbar navigation={navigation} />
-      <View style={[styles.row, {justifyContent: "flex-end", paddingHorizontal: 20}]}>
-        <MyOrderButton onPress={() => navigation.navigate("MyOrder")}/>
+      <View
+        style={[
+          styles.row,
+          { justifyContent: "flex-end", paddingHorizontal: 20 },
+        ]}
+      >
+        <MyOrderButton onPress={() => navigation.navigate("MyOrder")} />
       </View>
       <View style={styles.row}>
-        <Text style={[{fontSize: theme.fontSizes.h3}]}>Lo más vendido</Text>
+        <Text style={[{ fontSize: theme.fontSizes.h3 }]}>Lo más vendido</Text>
       </View>
       <View style={styles.row}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -54,29 +65,31 @@ const Home = ({ navigation }) => {
           ))}
         </ScrollView>
       </View>
-      <View style={styles.row}>
-        <Text style={[{fontSize: theme.fontSizes.h3}]}>Categorías</Text>
+      <View style={styles.categories}>
+        <View style={styles.row}>
+          <Text style={[{ fontSize: theme.fontSizes.h3 }]}>Categorías</Text>
+        </View>
+        {loading ? (
+          <ActivityIndicator size="large" color={theme.colors.fontGrey} />
+        ) : (
+          <FlatList
+            style={{ flex: 1, marginHorizontal: 20 }}
+            data={categorias}
+            renderItem={({ item: category }) => (
+              <View key={category.id}>
+                <HomeItem
+                  url={category.imagen}
+                  id={category.id}
+                  name={category.nombre}
+                  navigation={navigation}
+                  navigate={"CategoryItems"}
+                />
+              </View>
+            )}
+            numColumns={2}
+          />
+        )}
       </View>
-      {loading ? (
-        <ActivityIndicator size="large" color={theme.colors.fontGrey} />
-      ) : (
-        <FlatList
-          style={{ flex: 1, marginHorizontal: 20 }}
-          data={categorias}
-          renderItem={({ item: category }) => (
-            <View key={category.id}>
-              <HomeItem
-                url={category.imagen}
-                id={category.id}
-                name={category.nombre}
-                navigation={navigation}
-                navigate={"CategoryItems"}
-              />
-            </View>
-          )}
-          numColumns={2}
-        />
-      )}
     </View>
   );
 };
@@ -91,6 +104,9 @@ const styles = {
     marginLeft: 20,
     flexDirection: "row",
   },
+  categories: {
+    flex: 1
+  }
 };
 
 export default Home;
