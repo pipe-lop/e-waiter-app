@@ -1,19 +1,27 @@
-import { ActivityIndicator, Pressable, Text, View } from "react-native";
+import { ActivityIndicator, Alert, FlatList, Pressable, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
+import PaymentItem from "./PaymentItem";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+import firebase from "../../../database/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 import Contants from "expo-constants";
 import SecondaryHeader from "../navigation/SecondaryHeader";
 import theme from "../../theme";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import firebase from "../../../database/firebase";
-import { onAuthStateChanged } from "firebase/auth";
-import { FlatList } from "react-native";
-import PressablePaymentItem from "./PressablePaymentItem";
+import { useIsFocused } from "@react-navigation/native";
 
-const SelectPaymentMethod = ({ navigation }) => {
+const PaymentMethodList = ({ navigation }) => {
   const [pmethods, setPmethods] = useState([]);
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selected, setSelected] = useState(null)
+
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     onAuthStateChanged(firebase.auth, (user) => {
@@ -21,10 +29,13 @@ const SelectPaymentMethod = ({ navigation }) => {
         setUserId(user.uid);
       }
     });
-    if(userId != null && pmethods.length == 0){
-      getPMethods(userId)
+    if (userId != null && pmethods.length == 0) {
+      getPMethods(userId);
     }
-  }, [userId, pmethods]);
+    if(userId != null && isFocused){
+        getPMethods(userId);
+    }
+  }, [userId, pmethods, isFocused]);
 
   const getPMethods = async (id) => {
     try {
@@ -35,12 +46,10 @@ const SelectPaymentMethod = ({ navigation }) => {
       const querySnapshot = await getDocs(q);
       const methods = [];
       querySnapshot.forEach((doc) => {
-        const { cardNumber, expiration, cvv, type } = doc.data();
+        const { cardNumber, type } = doc.data();
         methods.push({
           id: doc.id,
           cardNumber,
-          expiration,
-          cvv,
           type,
         });
       });
@@ -79,20 +88,30 @@ const SelectPaymentMethod = ({ navigation }) => {
     }
   };
 
-  const onSelectHandler = (id) => {
-    setSelected(id)
-  }
-
-  const handlePay = () => {
-    console.log("pagando...");
+  const deleteMethod = (id) => {
+    try {
+      Alert.alert("Atención", "Se va a eliminar el método de pago", [
+        {
+          text: "Cancel",
+          onPress: async () => console.log("Delete Account Canceled"),
+        },
+        {
+          text: "Ok",
+          onPress: async () => {
+            try {
+              await deleteDoc(doc(firebase.db, "paymentMethods", id));
+            } catch (error) {
+              console.log(error);
+            }
+          },
+        },
+      ]);
+    } catch (e) {}
   };
 
   return (
     <View style={styles.container}>
-      <SecondaryHeader
-        title={"Seleccione método de pago"}
-        navigation={navigation}
-      />
+      <SecondaryHeader title={"Mis métodos de pago"} navigation={navigation} />
       <View style={styles.body}>
         {loading ? (
           <ActivityIndicator size="large" color={theme.colors.fontGrey} />
@@ -101,16 +120,15 @@ const SelectPaymentMethod = ({ navigation }) => {
             data={pmethods}
             keyboardShouldPersistTaps={"handled"}
             renderItem={({ item }) => (
-              <PressablePaymentItem
+              <PaymentItem
                 title={getTitle(item.type)}
                 icon={getType(item.type)}
                 number={item.cardNumber}
-                selected={selected === item.id}
-                onSelect={() => onSelectHandler(item.id)}
+                actions={true}
+                onDelete={() => deleteMethod(item.id)}
               />
             )}
             keyExtractor={(item) => item.id}
-            extraData={selected}
           />
         )}
       </View>
@@ -120,16 +138,11 @@ const SelectPaymentMethod = ({ navigation }) => {
       >
         <Text>Añadir método de pago</Text>
       </Pressable>
-      <View style={[theme.footer]}>
-        <Pressable style={theme.darkButton} onPress={() => handlePay()}>
-          <Text style={theme.buttonText}>Pagar</Text>
-        </Pressable>
-      </View>
     </View>
   );
 };
 
-export default SelectPaymentMethod;
+export default PaymentMethodList;
 
 const styles = {
   container: {
@@ -146,6 +159,7 @@ const styles = {
   links: {
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 15,
+    marginTop: 15,
+    marginBottom: 50
   },
 };

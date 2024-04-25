@@ -1,27 +1,26 @@
 import { Pressable, Text, View } from "react-native";
 import React, { useEffect } from "react";
 import theme from "../../theme";
-import Fontisto from '@expo/vector-icons/Fontisto'
+import Fontisto from "@expo/vector-icons/Fontisto";
 
-const PaymentItem = ({ title, number, icon, selected, onSelect }) => {
+const PaymentItem = ({ title, number, icon, selected, actions, onDelete }) => {
   const mapCards = new Map([
-    ['maestro', 'mastercard'],
-    ['mastercard','mastercard'],
-    ['visa','visa'],
-    ['other','credit-card']
+    ["maestro", "mastercard"],
+    ["mastercard", "mastercard"],
+    ["visa", "visa"],
+    ["other", "credit-card"],
   ]);
 
   const getNumber = (number) => {
-    return number.replace(number.substring(5,14), '**** ****');
-  }
+    return number.replace(number.substring(5, 14), "**** ****");
+  };
 
-  useEffect(() => {
-  }, [])
-  
+  useEffect(() => {}, []);
+
   return (
-    <Pressable style={[styles.container, selected ? styles.selected : ""]} onPress={onSelect}>
+    <View style={[styles.container, selected ? styles.selected : ""]}>
       <View style={styles.icon_col}>
-        <Fontisto name={mapCards.get(icon)} size={26}/>
+        <Fontisto name={mapCards.get(icon)} size={26} />
       </View>
       <View style={styles.text_col}>
         <View>
@@ -31,7 +30,16 @@ const PaymentItem = ({ title, number, icon, selected, onSelect }) => {
           <Text>{getNumber(number)}</Text>
         </View>
       </View>
-    </Pressable>
+      <View style={styles.action_col}>
+        {actions ? (
+          <Pressable onPress={onDelete}>
+            <Fontisto name={"trash"} size={22} />
+          </Pressable>
+        ) : (
+          <></>
+        )}
+      </View>
+    </View>
   );
 };
 
@@ -51,12 +59,17 @@ const styles = {
   icon_col: {
     width: "20%",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   text_col: {
-    width: "80%",
+    width: "70%",
+  },
+  action_col: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "10%",
   },
   selected: {
-    borderWidth: 2
-  }
+    borderWidth: 2,
+  },
 };
