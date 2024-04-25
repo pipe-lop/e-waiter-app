@@ -17,6 +17,7 @@ import MyOrderButton from "./order/MyOrderButton.jsx";
 
 const Home = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
+  const [loadingBest, setLoadingBest] = useState(true);
   const [categorias, setCategorias] = useState([]);
   const getCategories = async () => {
     const cts = [];
@@ -31,6 +32,7 @@ const Home = ({ navigation }) => {
       });
       setCategorias(cts);
       setLoading(false);
+      setLoadingBest(false);
     });
   };
   useEffect(() => {
@@ -51,20 +53,26 @@ const Home = ({ navigation }) => {
       <View style={styles.row}>
         <Text style={[{ fontSize: theme.fontSizes.h3 }]}>Lo más vendido</Text>
       </View>
-      <View style={styles.row}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {bestSellers.map((value) => (
-            <HomeItem
-              key={value.id}
-              id={value.id}
-              url={value.imagen}
-              name={value.nombre}
-              navigation={navigation}
-              navigate={"ItemDetail"}
-            />
-          ))}
-        </ScrollView>
-      </View>
+      {loadingBest ? (
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color={theme.colors.fontGrey} />
+        </View>
+      ) : (
+        <View style={styles.row}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {bestSellers.map((value) => (
+              <HomeItem
+                key={value.id}
+                id={value.id}
+                url={value.imagen}
+                name={value.nombre}
+                navigation={navigation}
+                navigate={"ItemDetail"}
+              />
+            ))}
+          </ScrollView>
+        </View>
+      )}
       <View style={styles.categories}>
         <View style={styles.row}>
           <Text style={[{ fontSize: theme.fontSizes.h3 }]}>Categorías</Text>
@@ -105,8 +113,13 @@ const styles = {
     flexDirection: "row",
   },
   categories: {
-    flex: 1
-  }
+    flex: 1,
+  },
+  loader: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 };
 
 export default Home;
