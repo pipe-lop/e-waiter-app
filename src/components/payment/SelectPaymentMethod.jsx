@@ -3,20 +3,55 @@ import React, { useEffect, useState } from "react";
 import Contants from "expo-constants";
 import SecondaryHeader from "../navigation/SecondaryHeader";
 import theme from "../../theme";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  increment,
+  query,
+  setDoc,
+  where,
+  runTransaction,
+  serverTimestamp,
+} from "firebase/firestore";
 import firebase from "../../../database/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { FlatList } from "react-native";
 import PressablePaymentItem from "./PressablePaymentItem";
-import { useIsFocused } from "@react-navigation/native";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
 const SelectPaymentMethod = ({ navigation }) => {
   const [pmethods, setPmethods] = useState([]);
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selected, setSelected] = useState(null)
+  const [selected, setSelected] = useState(null);
+  const [finalOrderNumber, setFinalOrderNumber] = useState(null);
 
-  const isFocused = useIsFocused();
+  const cart = useSelector((state) => state.cart.cart);
+  const [totalCart, setTotalCart] = useState(0);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (userId != null && pmethods.length > 0) {
+        getPMethods(userId);
+      }
+      return () => {};
+    }, [])
+  );
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      setTotalCart(
+        Math.round(
+          cart.reduce((acc, item) => acc + item.precio * item.quantity, 0) * 100
+        ) / 100
+      );
+    } else {
+      setTotalCart(0);
+    }
+  }, [cart]);
 
   useEffect(() => {
     onAuthStateChanged(firebase.auth, (user) => {
@@ -24,13 +59,10 @@ const SelectPaymentMethod = ({ navigation }) => {
         setUserId(user.uid);
       }
     });
-    if(userId != null && pmethods.length == 0){
-      getPMethods(userId)
+    if (userId != null && pmethods.length == 0) {
+      getPMethods(userId);
     }
-    if(userId != null && isFocused){
-      getPMethods(userId)
-    }
-  }, [userId, pmethods, isFocused]);
+  }, [userId, pmethods]);
 
   const getPMethods = async (id) => {
     try {
@@ -86,11 +118,40 @@ const SelectPaymentMethod = ({ navigation }) => {
   };
 
   const onSelectHandler = (id) => {
-    setSelected(id)
-  }
+    setSelected(id);
+  };
 
   const handlePay = () => {
-    console.log("pagando...");
+    saveOrder();
+  };
+
+  const saveOrder = async () => {
+    try {
+      await runTransaction(firebase.db, async (transaction) => {
+        const statsRef = doc(firebase.db, "orders", "--stats--");
+        const oStats = await transaction.get(statsRef);
+        const orderId = 0;
+        if (!oStats.exists()) {
+          await transaction.set(statsRef, { orders: 1 });
+        } else {
+          await transaction.update(statsRef, { orders: increment(1) });
+          orderId = oStats.data().orders;
+        }
+        await transaction.set(doc(collection(firebase.db, "orders")), {
+          orderId: orderId,
+          totalAmmount: totalCart,
+          inSite: true,
+          client: userId,
+          status: "created",
+          createdDate: serverTimestamp(),
+          updateDate: serverTimestamp(),
+          items: cart,
+        });
+        setFinalOrderNumber(orderId)
+      });
+    } catch (e) {
+      console.log("Error en saveOrder: ", e);
+    }
   };
 
   return (
