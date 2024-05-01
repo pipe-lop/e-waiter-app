@@ -36,7 +36,7 @@ const Home = ({ navigation }) => {
     });
   };
   useEffect(() => {
-    // getCategories();
+    getCategories();
   }, []);
 
   return (
