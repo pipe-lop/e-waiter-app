@@ -19,18 +19,20 @@ import firebase from "../../../database/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { FlatList } from "react-native";
 import PressablePaymentItem from "./PressablePaymentItem";
-import { useFocusEffect, useIsFocused } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { StackActions, useFocusEffect } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { cleanCart } from "../../../redux/CartReducer";
 
 const SelectPaymentMethod = ({ navigation }) => {
   const [pmethods, setPmethods] = useState([]);
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
-  const [finalOrderNumber, setFinalOrderNumber] = useState(null);
 
   const cart = useSelector((state) => state.cart.cart);
   const [totalCart, setTotalCart] = useState(0);
+
+  const dispatch = useDispatch();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -130,7 +132,7 @@ const SelectPaymentMethod = ({ navigation }) => {
       await runTransaction(firebase.db, async (transaction) => {
         const statsRef = doc(firebase.db, "orders", "--stats--");
         const oStats = await transaction.get(statsRef);
-        const orderId = 0;
+        let orderId = 0;
         if (!oStats.exists()) {
           await transaction.set(statsRef, { orders: 1 });
         } else {
@@ -147,7 +149,10 @@ const SelectPaymentMethod = ({ navigation }) => {
           updateDate: serverTimestamp(),
           items: cart,
         });
-        setFinalOrderNumber(orderId)
+        dispatch(cleanCart())
+        navigation.navigate('MyOrderConfirmed', {
+          orderId: orderId,
+        })
       });
     } catch (e) {
       console.log("Error en saveOrder: ", e);
