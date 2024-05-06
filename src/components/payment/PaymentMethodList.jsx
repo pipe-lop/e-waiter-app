@@ -14,14 +14,21 @@ import { onAuthStateChanged } from "firebase/auth";
 import Contants from "expo-constants";
 import SecondaryHeader from "../navigation/SecondaryHeader";
 import theme from "../../theme";
-import { useIsFocused } from "@react-navigation/native";
+import { useFocusEffect} from "@react-navigation/native";
 
 const PaymentMethodList = ({ navigation }) => {
   const [pmethods, setPmethods] = useState([]);
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const isFocused = useIsFocused();
+  useFocusEffect(
+    React.useCallback(() => {
+      if (userId != null && pmethods.length > 0) {
+        getPMethods(userId);
+      }
+      return () => {};
+    }, [])
+  );
 
   useEffect(() => {
     onAuthStateChanged(firebase.auth, (user) => {
@@ -32,10 +39,7 @@ const PaymentMethodList = ({ navigation }) => {
     if (userId != null && pmethods.length == 0) {
       getPMethods(userId);
     }
-    if(userId != null && isFocused){
-        getPMethods(userId);
-    }
-  }, [userId, pmethods, isFocused]);
+  }, [userId, pmethods]);
 
   const getPMethods = async (id) => {
     try {
