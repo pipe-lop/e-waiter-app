@@ -4,13 +4,11 @@ import Contants from "expo-constants";
 import SecondaryHeader from "../navigation/SecondaryHeader";
 import theme from "../../theme";
 import {
-  addDoc,
   collection,
   doc,
   getDocs,
   increment,
   query,
-  setDoc,
   where,
   runTransaction,
   serverTimestamp,
