@@ -1,11 +1,12 @@
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, FlatList, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { collection, getDocs, limit, query, where } from 'firebase/firestore'
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore'
 import firebase from '../../../database/firebase'
 import { onAuthStateChanged } from 'firebase/auth'
 import SecondaryHeader from '../navigation/SecondaryHeader'
 import theme from '../../theme'
 import Constants from "expo-constants"
+import MyOrderStatusItem from './MyOrderStatusItem'
 
 const MyOrders = (props) => {
     const {navigation} = props
@@ -27,7 +28,7 @@ const MyOrders = (props) => {
 
     const getOrders = async (id) => {
         try{
-            const q = query(collection(firebase.db, 'orders'), where('client', '==', id));
+            const q = query(collection(firebase.db, 'orders'), where('client', '==', id), orderBy("createdDate", "desc"));
             const querySnapshot = await getDocs(q);
             let orders = []
             querySnapshot.forEach((doc) => {
@@ -35,7 +36,6 @@ const MyOrders = (props) => {
                 orders.push({id: doc.id, orderId: orderId, status: status})
             })
             if(orders.length > 0){
-                console.log(orders)
                 setLoading(false)
                 setOrders(orders)
             }
@@ -47,7 +47,6 @@ const MyOrders = (props) => {
   return (
     <View style={styles.container}>
       <SecondaryHeader title={"Mis pedidos"} navigation={navigation} />
-      <Text>MyOrders</Text>
       <View style={[styles.body, {height: 'auto'}]}>
         {loading ? (
           <ActivityIndicator size="large" color={theme.colors.fontGrey} />
@@ -56,7 +55,7 @@ const MyOrders = (props) => {
             data={orders}
             keyboardShouldPersistTaps={"handled"}
             renderItem={({ item }) => (
-              <Text>{item.orderId}</Text>
+                <MyOrderStatusItem status={item.status} orderId={item.orderId}/>
             )}
             keyExtractor={(item) => item.id}
           />
@@ -74,7 +73,7 @@ const styles = {
         flex: 1,
         justifyContent: "flex-start",
         alignItems: "center",
-        paddingHorizontal: 20,
+        paddingHorizontal: 30,
         paddingTop: 50,
       },
 }
