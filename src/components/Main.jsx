@@ -20,6 +20,11 @@ import SecondaryNavbar from "./navigation/SecondaryNavbar.jsx";
 import { Provider } from "react-redux";
 import store from "../../store.js";
 import MyOrder from "./order/MyOrder.jsx";
+import SelectPaymentMethod from "./payment/SelectPaymentMethod.jsx";
+import AddPaymentMethod from "./payment/AddPaymentMethod.jsx";
+import PaymentMethodList from "./payment/PaymentMethodList.jsx";
+import MyOrderConfirmed from "./order/MyOrderConfirmed.jsx";
+import MyOrders from "./order/MyOrders.jsx";
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +42,11 @@ function InsideLayout() {
       <InsideStack.Screen name="ChangePassword" component={ChangePassword} />
       <InsideStack.Screen name="SecondaryNavbar" component={SecondaryNavbar} />
       <InsideStack.Screen name="MyOrder" component={MyOrder} />
+      <InsideStack.Screen name="SelectPaymentMethod" component={SelectPaymentMethod} />
+      <InsideStack.Screen name="AddPaymentMethod" component={AddPaymentMethod} />
+      <InsideStack.Screen name="PaymentMethodList" component={PaymentMethodList} />
+      <InsideStack.Screen name="MyOrderConfirmed" component={MyOrderConfirmed} />
+      <InsideStack.Screen name="MyOrdersList" component={MyOrders} />
     </InsideStack.Navigator>
   );
 }

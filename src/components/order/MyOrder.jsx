@@ -6,6 +6,7 @@ import Navbar from "../Navbar";
 import OrderItem from "./OrderItem";
 import { useDispatch, useSelector } from "react-redux";
 import { decrementQuantity, incremetQuantity } from "../../../redux/CartReducer";
+import Toast from "react-native-root-toast";
 
 const MyOrder = ({ navigation }) => {
     const cart = useSelector((state) => state.cart.cart)
@@ -24,7 +25,16 @@ const MyOrder = ({ navigation }) => {
             setTotalCart(0)
         }
     }, [cart])
-    
+    const handleOrderComfirm = () => {
+        if(totalCart > 0) {
+            navigation.navigate("SelectPaymentMethod")
+        } else{
+            Toast.show('No ha añadido productos al pedido',{
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.CENTER
+              })
+        }
+    }
   return (
     <View style={styles.container}>
       <View style={[theme.header]}>
@@ -55,7 +65,7 @@ const MyOrder = ({ navigation }) => {
         </View>
       </View>
       <View style={[theme.footer]}>
-        <Pressable style={theme.darkButton}>
+        <Pressable style={theme.darkButton} onPress={() => handleOrderComfirm()}>
           <Text style={theme.buttonText}>Confirmar pedido</Text>
         </Pressable>
       </View>
