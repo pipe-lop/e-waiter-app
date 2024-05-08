@@ -44,6 +44,12 @@ const MyOrders = (props) => {
         }
     }
     
+    const orderDetail = (id) => {
+      navigation.navigate('OrderDetail', {
+        id: id
+      })
+    }
+    
   return (
     <View style={styles.container}>
       <SecondaryHeader title={"Mis pedidos"} navigation={navigation} />
@@ -55,7 +61,7 @@ const MyOrders = (props) => {
             data={orders}
             keyboardShouldPersistTaps={"handled"}
             renderItem={({ item }) => (
-                <MyOrderStatusItem status={item.status} orderId={item.orderId}/>
+                <MyOrderStatusItem status={item.status} orderId={item.orderId} onPress={() => orderDetail(item.id)}/>
             )}
             keyExtractor={(item) => item.id}
           />

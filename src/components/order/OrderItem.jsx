@@ -3,7 +3,14 @@ import React from "react";
 import theme from "../../theme";
 import Entypo from "@expo/vector-icons/Entypo";
 
-const OrderItem = ({ name, price, quantity, increment, decrement}) => {
+const OrderItem = ({
+  name,
+  price,
+  quantity,
+  increment,
+  decrement,
+  enableActions,
+}) => {
   return (
     <Pressable>
       <View style={[styles.container]}>
@@ -14,27 +21,35 @@ const OrderItem = ({ name, price, quantity, increment, decrement}) => {
           <Text>{price}€</Text>
         </View>
         <View style={styles.actions}>
-          <Pressable
-            style={[
-              theme.quantityButton,
-              { backgroundColor: theme.colors.greenButton },
-            ]}
-            onPress={increment}
-          >
-            <Entypo name="plus" size={20} color={theme.colors.white}/>
-          </Pressable>
+          {enableActions ? (
+            <Pressable
+              style={[
+                theme.quantityButton,
+                { backgroundColor: theme.colors.greenButton },
+              ]}
+              onPress={increment}
+            >
+              <Entypo name="plus" size={20} color={theme.colors.white} />
+            </Pressable>
+          ) : (
+            <></>
+          )}
           <View style={{ flex: 1, justifyContent: "center" }}>
-            <Text style={{ textAlign: "center"}}>{quantity}</Text>
+            <Text style={{ textAlign: "center" }}>{quantity}</Text>
           </View>
-          <Pressable
-            style={[
-              theme.quantityButton,
-              { backgroundColor: theme.colors.redButton },
-            ]}
-            onPress={decrement}
-          >
-            <Entypo name="minus" size={20} color={theme.colors.white}/>
-          </Pressable>
+          {enableActions ? (
+            <Pressable
+              style={[
+                theme.quantityButton,
+                { backgroundColor: theme.colors.redButton },
+              ]}
+              onPress={decrement}
+            >
+              <Entypo name="minus" size={20} color={theme.colors.white} />
+            </Pressable>
+          ) : (
+            <></>
+          )}
         </View>
       </View>
     </Pressable>
