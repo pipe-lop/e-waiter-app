@@ -51,6 +51,7 @@ const MyOrder = ({ navigation }) => {
               quantity={item.quantity}
               increment={() => incremetItemQuantity(item)}
               decrement={() => decrementItemQuantity(item)}
+              enableActions={true}
             />
           )}
           keyExtractor={(item) => item.id}

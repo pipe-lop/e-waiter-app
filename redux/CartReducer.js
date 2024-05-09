@@ -40,10 +40,13 @@ export const CartSlice = createSlice({
         },
         cleanCart: (state) => {
             state.cart = [];
+        },
+        overrideCart: (state, action) => {
+            state.cart = action.payload;
         }
     }
 })
 
-export const { addToCart, removeFromCart, incremetQuantity, decrementQuantity, cleanCart } = CartSlice.actions;
+export const { addToCart, removeFromCart, incremetQuantity, decrementQuantity, cleanCart, overrideCart } = CartSlice.actions;
 
 export default CartSlice.reducer
