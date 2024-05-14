@@ -14,11 +14,16 @@ import Navbar from "./Navbar.jsx";
 import bestSellers from "../data/bestSellers.js";
 import { doc, getDoc } from "firebase/firestore";
 import firebase from "../../database/firebase.js";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/CartReducer.js";
+import Toast from "react-native-root-toast";
 
 const ItemDetail = ({ navigation, route }) => {
   const itemId = route.params.id;
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState(null);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     getProduct();
   }, []);
@@ -41,6 +46,18 @@ const ItemDetail = ({ navigation, route }) => {
       console.log(e);
     }
   };
+
+  const addItemToCart = () => {
+    dispatch(addToCart({
+      id: itemId,
+      nombre: item.nombre,
+      precio: item.precio
+    }))
+    Toast.show('Se ha añadido el producto a tu pedido',{
+      duration: Toast.durations.LONG,
+    })
+    navigation.navigate('Home')
+  }
 
   return (
     <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
@@ -72,7 +89,7 @@ const ItemDetail = ({ navigation, route }) => {
           <></>
         ) : (
           <View style={[theme.footer]}>
-            <Pressable style={theme.darkButton}>
+            <Pressable style={theme.darkButton} onPress={() => addItemToCart()}>
               <Text style={theme.buttonText}>Añadir</Text>
             </Pressable>
           </View>
