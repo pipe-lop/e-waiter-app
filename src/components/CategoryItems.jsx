@@ -12,6 +12,7 @@ import Toast from "react-native-root-toast";
 
 const CategoryItems = ({ navigation, route }) => {
   const categoryId = route.params.id;
+  const detail = route.params.detail;
   const [products, setProducts] = useState([])
   const getProducts = async() => {
     const pds = []
@@ -28,6 +29,7 @@ const CategoryItems = ({ navigation, route }) => {
     setProducts(pds)
   }
   useEffect(() => {
+    console.log(route)
     getProducts()
   }, [])
   
@@ -47,6 +49,11 @@ const CategoryItems = ({ navigation, route }) => {
   const goToHome = () => {
     navigation.navigate("Home")
   }
+  const goToItemDetail = (id) => {
+    navigation.navigate("ItemDetail", {
+      id: id
+    })
+  }
   return (
     <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
       <View style={[{ marginTop: Constants.statusBarHeight }, theme.container]}>
@@ -64,6 +71,8 @@ const CategoryItems = ({ navigation, route }) => {
                 price={item.precio}
                 selected={item.id === selected}
                 onSelect={onSelect}
+                detail={detail}
+                onDetail={() => goToItemDetail(item.id)}
               />
             )}
             keyExtractor={(item) => item.id}

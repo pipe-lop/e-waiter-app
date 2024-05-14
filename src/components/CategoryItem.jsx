@@ -1,8 +1,9 @@
 import React from "react";
 import theme from "../theme";
 import { View, Text, Pressable } from "react-native";
+import Octicons from "@expo/vector-icons/Octicons";
 
-const CategoryItem = ({ navigation, id, name, price, selected, onSelect }) => {
+const CategoryItem = ({ navigation, id, name, price, selected, onSelect, detail, onDetail }) => {
   return (
     <Pressable onPress={() => onSelect(id)}>
       <View style={[styles.container, selected ? { borderWidth: 1.5 } : ""]}>
@@ -12,6 +13,12 @@ const CategoryItem = ({ navigation, id, name, price, selected, onSelect }) => {
         <View style={styles.price}>
           <Text>{price}€</Text>
         </View>
+        {detail ? (
+          <Pressable onPress={onDetail} style={styles.detail}>
+            <Octicons name="chevron-right" size={20} color={theme.colors.black}/>
+          </Pressable>
+        ) : (<></>)}
+        
       </View>
     </Pressable>
   );
@@ -29,10 +36,15 @@ const styles = {
     paddingHorizontal: 10,
   },
   name: {
-    width: "80%",
+    width: "70%",
   },
   price: {
     width: "20%",
+  },
+  detail: {
+    width: "10%",
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   selected: {
     borderWidth: 1.5,

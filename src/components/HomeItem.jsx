@@ -2,10 +2,12 @@ import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import theme from "../theme";
 
-const HomeItem = ({id, name, url, navigation, navigate}) => {
+const HomeItem = ({id, name, url, navigation, navigate, detail}) => {
   const onPress = () => navigation.navigate(navigate, {
     id: id,
+    detail: detail
   });
+  
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.image}>

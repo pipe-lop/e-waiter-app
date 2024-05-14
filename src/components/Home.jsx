@@ -19,24 +19,45 @@ const Home = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [loadingBest, setLoadingBest] = useState(true);
   const [categorias, setCategorias] = useState([]);
+  const [destacados, setDestacados] = useState([])
   const getCategories = async () => {
     const cts = [];
     const q = query(collection(firebase.db, "categories"), orderBy("orden"));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      const { nombre, imagen } = doc.data();
+      const { nombre, imagen, detalle } = doc.data();
       cts.push({
         id: doc.id,
         nombre,
         imagen,
+        detalle
       });
-      setCategorias(cts);
-      setLoading(false);
-      setLoadingBest(false);
     });
+    setCategorias(cts);
+    setLoading(false);
   };
+  const getFeatured = async () => {
+    try{
+      const dest = []
+      const querySnapshot = await getDocs(collection(firebase.db, "featured"))
+      querySnapshot.forEach((doc) => {
+        const {name, image, productId} = doc.data()
+        dest.push({
+          id: doc.id,
+          nombre: name,
+          imagen: image,
+          productId
+        })
+      })
+      setDestacados(dest)
+      setLoadingBest(false)
+    } catch (e) {
+      console.log("Error al recibir los productos destacados: ", e)
+    }
+  }
   useEffect(() => {
     getCategories();
+    getFeatured();
   }, []);
 
   return (
@@ -60,13 +81,14 @@ const Home = ({ navigation }) => {
       ) : (
         <View style={styles.row}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {bestSellers.map((value) => (
+            {destacados.map((value) => (
               <HomeItem
                 key={value.id}
-                id={value.id}
+                id={value.productId}
                 url={value.imagen}
                 name={value.nombre}
                 navigation={navigation}
+                detail={false}
                 navigate={"ItemDetail"}
               />
             ))}
@@ -90,6 +112,7 @@ const Home = ({ navigation }) => {
                   id={category.id}
                   name={category.nombre}
                   navigation={navigation}
+                  detail={category.detalle}
                   navigate={"CategoryItems"}
                 />
               </View>
