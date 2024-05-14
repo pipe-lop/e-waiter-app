@@ -9,7 +9,6 @@ import {
 import Constants from "expo-constants";
 import HomeItem from "./HomeItem";
 import Navbar from "./Navbar";
-import bestSellers from "../data/bestSellers.js";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import firebase from "../../database/firebase.js";
 import theme from "../theme.js";

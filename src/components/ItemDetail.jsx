@@ -11,7 +11,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import Navbar from "./Navbar.jsx";
-import bestSellers from "../data/bestSellers.js";
 import { doc, getDoc } from "firebase/firestore";
 import firebase from "../../database/firebase.js";
 import { useDispatch } from "react-redux";
