@@ -73,12 +73,14 @@ const Login = ({ navigation }) => {
             onChangeHandler={(value) => handleChangeText("email", value)}
             secureTextEntry={false}
             autoCapitalize={"none"}
+            placeholder={"ejemplo@ewaiter.com"}
           />
           <CustomInput
             name={"Contraseña"}
             onChangeHandler={(value) => handleChangeText("password", value)}
             secureTextEntry={true}
             autoCapitalize={"none"}
+            placeholder={"***********"}
           />
         </View>
         {loading ? (
