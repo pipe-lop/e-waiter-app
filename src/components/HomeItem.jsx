@@ -5,7 +5,8 @@ import theme from "../theme";
 const HomeItem = ({id, name, url, navigation, navigate, detail}) => {
   const onPress = () => navigation.navigate(navigate, {
     id: id,
-    detail: detail
+    detail: detail,
+    title: name
   });
   
   return (
