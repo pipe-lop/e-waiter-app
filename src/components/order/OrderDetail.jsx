@@ -1,10 +1,4 @@
-import {
-  ActivityIndicator,
-  Alert,
-  FlatList,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, Alert, FlatList, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import firebase from "../../../database/firebase";
@@ -105,60 +99,64 @@ const OrderDetail = (props) => {
   };
 
   return (
-    <View style={styles.container}>
-      {loading ? (
-        <ActivityIndicator size="large" color={theme.colors.fontGrey} />
-      ) : (
-        <View style={styles.loaded}>
-          <View style={styles.body}>
-            <SecondaryHeader
-              navigation={navigation}
-              title={"Resumen del pedido"}
-            />
-            <View style={styles.stats}>
-              <View style={[styles.col_stats, styles.col_1_stats]}>
-                <Fontisto
-                  name={
-                    mapStatus.get(order.status) != ""
-                      ? mapStatus.get(order.status)
-                      : "spinner"
-                  }
-                  size={26}
+    <View
+      style={{ backgroundColor: theme.colors.background, flex: 1, flexGrow: 1 }}
+    >
+      <View style={styles.container}>
+        {loading ? (
+          <ActivityIndicator size="large" color={theme.colors.fontGrey} />
+        ) : (
+          <View style={styles.loaded}>
+            <View style={styles.body}>
+              <SecondaryHeader
+                navigation={navigation}
+                title={"Resumen del pedido"}
+              />
+              <View style={styles.stats}>
+                <View style={[styles.col_stats, styles.col_1_stats]}>
+                  <Fontisto
+                    name={
+                      mapStatus.get(order.status) != ""
+                        ? mapStatus.get(order.status)
+                        : "spinner"
+                    }
+                    size={26}
+                  />
+                  <Text>{order.status}</Text>
+                </View>
+                <View style={[styles.col_stats, styles.col_2_stats]}>
+                  <Fontisto name={"prescription"} size={26} />
+                  <Text>Pedido: {order.orderId}</Text>
+                </View>
+                <View style={[styles.col_stats, styles.col_3_stats]}>
+                  <Fontisto name={"dollar"} size={26} />
+                  <Text>{order.totalAmount} €</Text>
+                </View>
+              </View>
+              <View style={styles.items}>
+                <FlatList
+                  data={order.items}
+                  keyboardShouldPersistTaps={"handled"}
+                  renderItem={({ item }) => (
+                    <OrderItem
+                      name={item.nombre}
+                      price={item.precio}
+                      quantity={item.quantity}
+                    />
+                  )}
+                  keyExtractor={(item) => item.id}
                 />
-                <Text>{order.status}</Text>
-              </View>
-              <View style={[styles.col_stats, styles.col_2_stats]}>
-                <Fontisto name={"prescription"} size={26} />
-                <Text>Pedido: {order.orderId}</Text>
-              </View>
-              <View style={[styles.col_stats, styles.col_3_stats]}>
-                <Fontisto name={"dollar"} size={26} />
-                <Text>{order.totalAmount} €</Text>
               </View>
             </View>
-            <View style={styles.items}>
-              <FlatList
-                data={order.items}
-                keyboardShouldPersistTaps={"handled"}
-                renderItem={({ item }) => (
-                  <OrderItem
-                    name={item.nombre}
-                    price={item.precio}
-                    quantity={item.quantity}
-                  />
-                )}
-                keyExtractor={(item) => item.id}
+            <View style={theme.footer}>
+              <Button
+                title="Volver a realizar pedido"
+                onPress={() => handleReorder()}
               />
             </View>
           </View>
-          <View style={theme.footer}>
-            <Button
-              title="Volver a realizar pedido"
-              onPress={() => handleReorder()}
-            />
-          </View>
-        </View>
-      )}
+        )}
+      </View>
     </View>
   );
 };
