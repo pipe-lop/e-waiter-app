@@ -4,7 +4,7 @@ import SecondaryHeader from "../navigation/SecondaryHeader";
 import Constants from "expo-constants";
 import { onAuthStateChanged } from "@firebase/auth";
 import firebase from "../../../database/firebase";
-import { addDoc, collection, query, where, getDocs} from "@firebase/firestore";
+import { addDoc, collection, query, where, getDocs } from "@firebase/firestore";
 import { FormProvider, useForm } from "react-hook-form";
 import PaymentMethodForm from "./PaymentMethodForm";
 import Button from "../formComponents/Button";
@@ -34,7 +34,9 @@ const AddPaymentMethod = ({ navigation }) => {
 
   const saveMethod = async () => {
     try {
-      const {card} = cardValidator.number(formMethods.getValues('cardNumber'))
+      const { card } = cardValidator.number(
+        formMethods.getValues("cardNumber")
+      );
       const createNewDoc = await checkMethod(
         formMethods.getValues("cardNumber"),
         userId
@@ -46,11 +48,10 @@ const AddPaymentMethod = ({ navigation }) => {
           cardNumber: formMethods.getValues("cardNumber"),
           expiration: formMethods.getValues("expiration"),
           cvv: formMethods.getValues("cvv"),
-          type: card?.type
-        })
+          type: card?.type,
+        });
       }
-    } catch (e) {
-    }
+    } catch (e) {}
   };
 
   function onSubmit() {
@@ -73,28 +74,29 @@ const AddPaymentMethod = ({ navigation }) => {
         where("owner", "==", owner)
       );
       const querySnapshot = await getDocs(q);
-      return querySnapshot.empty
-    } catch (e) {
-    }
+      return querySnapshot.empty;
+    } catch (e) {}
   };
 
   return (
-    <View style={styles.container}>
-      <SecondaryHeader title={"Añade una tarjeta"} navigation={navigation} />
-      <View style={styles.body}>
-        <FormProvider {...formMethods}>
-          <View>
-            <PaymentMethodForm />
-          </View>
-          {formState.isValid && (
-            <View style={theme.footer}>
-              <Button
-                title="Añadir método de pago"
-                onPress={handleSubmit(onSubmit)}
-              />
+    <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
+      <View style={styles.container}>
+        <SecondaryHeader title={"Añade una tarjeta"} navigation={navigation} />
+        <View style={styles.body}>
+          <FormProvider {...formMethods}>
+            <View>
+              <PaymentMethodForm />
             </View>
-          )}
-        </FormProvider>
+            {formState.isValid && (
+              <View style={theme.footer}>
+                <Button
+                  title="Añadir método de pago"
+                  onPress={handleSubmit(onSubmit)}
+                />
+              </View>
+            )}
+          </FormProvider>
+        </View>
       </View>
     </View>
   );
