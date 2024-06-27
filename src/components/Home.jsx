@@ -60,6 +60,7 @@ const Home = ({ navigation }) => {
   }, []);
 
   return (
+    <View style={styles.backcont}>
     <View style={styles.container}>
       <Navbar navigation={navigation} />
       <View
@@ -121,14 +122,21 @@ const Home = ({ navigation }) => {
         )}
       </View>
     </View>
+    </View>
   );
 };
 
 const styles = {
+  backcont: {
+    flexGrow: 1,
+    flex: 1,
+    backgroundColor: theme.colors.background
+  },
   container: {
     marginTop: Constants.statusBarHeight,
     flexGrow: 1,
     justifyContent: "center",
+    flex: 1
   },
   row: {
     marginLeft: 20,
