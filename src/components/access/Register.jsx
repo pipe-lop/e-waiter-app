@@ -92,62 +92,68 @@ const Register = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <KeyboardAvoidingView behavior="´height">
-        <View style={styles.header}>
-          <AccessHeader
-            title={"Registrarme"}
-            keyboardEnabled={keyboardStatus}
-          />
-        </View>
-        <View style={styles.body}>
-          <View style={styles.form}>
-            <CustomInput
-              name={"Nombre"}
-              onChangeHandler={(value) => handleChangeText("firstName", value)}
-              secureTextEntry={false}
-            />
-            <CustomInput
-              name={"Apellidos"}
-              onChangeHandler={(value) => handleChangeText("lastName", value)}
-              secureTextEntry={false}
-            />
-            <CustomInput
-              name={"Email"}
-              onChangeHandler={(value) => handleChangeText("email", value)}
-              secureTextEntry={false}
-              autoCapitalize={"none"}
-              placeholder={"ejemplo@ewaiter.com"}
-            />
-            <CustomInput
-              name={"Contraseña"}
-              onChangeHandler={(value) => handleChangePassword(value)}
-              secureTextEntry={true}
-              autoCapitalize={"none"}
-              placeholder={"***********"}
-            />
-            <CustomInput
-              name={"Repetir contraseña"}
-              onChangeHandler={(value) => handleRepeatPassword(value)}
-              secureTextEntry={true}
-              autoCapitalize={"none"}
-              placeholder={"***********"}
+    <View
+      style={{ backgroundColor: theme.colors.background, flex: 1, flexGrow: 1 }}
+    >
+      <View style={styles.container}>
+        <KeyboardAvoidingView behavior="´height">
+          <View style={styles.header}>
+            <AccessHeader
+              title={"Registrarme"}
+              keyboardEnabled={keyboardStatus}
             />
           </View>
-          {loading ? (
-            <ActivityIndicator size="large" color={theme.colors.fontGrey} />
-          ) : (
-            <></>
-          )}
+          <View style={styles.body}>
+            <View style={styles.form}>
+              <CustomInput
+                name={"Nombre"}
+                onChangeHandler={(value) =>
+                  handleChangeText("firstName", value)
+                }
+                secureTextEntry={false}
+              />
+              <CustomInput
+                name={"Apellidos"}
+                onChangeHandler={(value) => handleChangeText("lastName", value)}
+                secureTextEntry={false}
+              />
+              <CustomInput
+                name={"Email"}
+                onChangeHandler={(value) => handleChangeText("email", value)}
+                secureTextEntry={false}
+                autoCapitalize={"none"}
+                placeholder={"ejemplo@ewaiter.com"}
+              />
+              <CustomInput
+                name={"Contraseña"}
+                onChangeHandler={(value) => handleChangePassword(value)}
+                secureTextEntry={true}
+                autoCapitalize={"none"}
+                placeholder={"***********"}
+              />
+              <CustomInput
+                name={"Repetir contraseña"}
+                onChangeHandler={(value) => handleRepeatPassword(value)}
+                secureTextEntry={true}
+                autoCapitalize={"none"}
+                placeholder={"***********"}
+              />
+            </View>
+            {loading ? (
+              <ActivityIndicator size="large" color={theme.colors.fontGrey} />
+            ) : (
+              <></>
+            )}
+          </View>
+        </KeyboardAvoidingView>
+        <View style={[theme.footer]}>
+          <TouchableOpacity
+            style={theme.darkButton}
+            onPress={handleRegistrationButton}
+          >
+            <Text style={theme.buttonText}>Registrarme</Text>
+          </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
-      <View style={[theme.footer]}>
-        <TouchableOpacity
-          style={theme.darkButton}
-          onPress={handleRegistrationButton}
-        >
-          <Text style={theme.buttonText}>Registrarme</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
