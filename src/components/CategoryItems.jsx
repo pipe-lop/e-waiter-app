@@ -13,6 +13,7 @@ import Toast from "react-native-root-toast";
 const CategoryItems = ({ navigation, route }) => {
   const categoryId = route.params.id;
   const detail = route.params.detail;
+  const title = route.params.title;
   const [products, setProducts] = useState([])
   const getProducts = async() => {
     const pds = []
@@ -60,6 +61,9 @@ const CategoryItems = ({ navigation, route }) => {
         <View style={[theme.header]}>
           <Navbar navigation={navigation} />
         </View>
+        <View style={styles.titlebox}>
+          <Text style={styles.titletext}>{title}</Text>
+        </View>
         <View style={[theme.body, { paddingHorizontal: 20 }]}>
           <FlatList
             data={products}
@@ -91,6 +95,15 @@ const CategoryItems = ({ navigation, route }) => {
 
 const styles = {
   container: {},
+  titlebox: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 15
+  },
+  titletext: {
+    fontSize: theme.fontSizes.h1
+  }
 };
 
 export default CategoryItems;
