@@ -57,14 +57,14 @@ const CategoryItems = ({ navigation, route }) => {
   }
   return (
     <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
-      <View style={[{ marginTop: Constants.statusBarHeight }, theme.container]}>
+      <View style={[{ marginTop: Constants.statusBarHeight, flex: 1 }, theme.container]}>
         <View style={[theme.header]}>
           <Navbar navigation={navigation} />
         </View>
         <View style={styles.titlebox}>
           <Text style={styles.titletext}>{title}</Text>
         </View>
-        <View style={[theme.body, { paddingHorizontal: 20 }]}>
+        <View style={[{flex: 1}, { paddingHorizontal: 20 }]}>
           <FlatList
             data={products}
             keyboardShouldPersistTaps={"handled"}
