@@ -48,6 +48,9 @@ const MyOrder = ({ navigation }) => {
         <View style={[theme.header]}>
           <Navbar navigation={navigation} />
         </View>
+        <View style={styles.titlebox}>
+          <Text style={styles.titletext}>Mi pedido</Text>
+        </View>
         <View style={styles.body}>
           <FlatList
             data={cart}
@@ -107,4 +110,13 @@ const styles = {
     paddingHorizontal: 30,
     justifyContent: "space-between",
   },
+  titlebox: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 15
+  },
+  titletext: {
+    fontSize: theme.fontSizes.h1
+  }
 };
