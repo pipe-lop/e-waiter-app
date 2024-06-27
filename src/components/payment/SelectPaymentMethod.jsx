@@ -147,10 +147,10 @@ const SelectPaymentMethod = ({ navigation }) => {
           updateDate: serverTimestamp(),
           items: cart,
         });
-        dispatch(cleanCart())
-        navigation.navigate('MyOrderConfirmed', {
+        dispatch(cleanCart());
+        navigation.navigate("MyOrderConfirmed", {
           orderId: orderId,
-        })
+        });
       });
     } catch (e) {
       console.log("Error en saveOrder: ", e);
@@ -158,42 +158,44 @@ const SelectPaymentMethod = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <SecondaryHeader
-        title={"Seleccione método de pago"}
-        navigation={navigation}
-      />
-      <View style={styles.body}>
-        {loading ? (
-          <ActivityIndicator size="large" color={theme.colors.fontGrey} />
-        ) : (
-          <FlatList
-            data={pmethods}
-            keyboardShouldPersistTaps={"handled"}
-            renderItem={({ item }) => (
-              <PressablePaymentItem
-                title={getTitle(item.type)}
-                icon={getType(item.type)}
-                number={item.cardNumber}
-                selected={selected === item.id}
-                onSelect={() => onSelectHandler(item.id)}
-              />
-            )}
-            keyExtractor={(item) => item.id}
-            extraData={selected}
-          />
-        )}
-      </View>
-      <Pressable
-        style={styles.links}
-        onPress={() => navigation.navigate("AddPaymentMethod")}
-      >
-        <Text>Añadir método de pago</Text>
-      </Pressable>
-      <View style={[theme.footer]}>
-        <Pressable style={theme.darkButton} onPress={() => handlePay()}>
-          <Text style={theme.buttonText}>Pagar</Text>
+    <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
+      <View style={styles.container}>
+        <SecondaryHeader
+          title={"Seleccione método de pago"}
+          navigation={navigation}
+        />
+        <View style={styles.body}>
+          {loading ? (
+            <ActivityIndicator size="large" color={theme.colors.fontGrey} />
+          ) : (
+            <FlatList
+              data={pmethods}
+              keyboardShouldPersistTaps={"handled"}
+              renderItem={({ item }) => (
+                <PressablePaymentItem
+                  title={getTitle(item.type)}
+                  icon={getType(item.type)}
+                  number={item.cardNumber}
+                  selected={selected === item.id}
+                  onSelect={() => onSelectHandler(item.id)}
+                />
+              )}
+              keyExtractor={(item) => item.id}
+              extraData={selected}
+            />
+          )}
+        </View>
+        <Pressable
+          style={styles.links}
+          onPress={() => navigation.navigate("AddPaymentMethod")}
+        >
+          <Text>Añadir método de pago</Text>
         </Pressable>
+        <View style={[theme.footer]}>
+          <Pressable style={theme.darkButton} onPress={() => handlePay()}>
+            <Text style={theme.buttonText}>Pagar</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );
