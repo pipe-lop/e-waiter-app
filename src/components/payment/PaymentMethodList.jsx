@@ -1,4 +1,11 @@
-import { ActivityIndicator, Alert, FlatList, Pressable, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import PaymentItem from "./PaymentItem";
 import {
@@ -14,7 +21,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import Contants from "expo-constants";
 import SecondaryHeader from "../navigation/SecondaryHeader";
 import theme from "../../theme";
-import { useFocusEffect} from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 
 const PaymentMethodList = ({ navigation }) => {
   const [pmethods, setPmethods] = useState([]);
@@ -114,34 +121,39 @@ const PaymentMethodList = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <SecondaryHeader title={"Mis métodos de pago"} navigation={navigation} />
-      <View style={styles.body}>
-        {loading ? (
-          <ActivityIndicator size="large" color={theme.colors.fontGrey} />
-        ) : (
-          <FlatList
-            data={pmethods}
-            keyboardShouldPersistTaps={"handled"}
-            renderItem={({ item }) => (
-              <PaymentItem
-                title={getTitle(item.type)}
-                icon={getType(item.type)}
-                number={item.cardNumber}
-                actions={true}
-                onDelete={() => deleteMethod(item.id)}
-              />
-            )}
-            keyExtractor={(item) => item.id}
-          />
-        )}
+    <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
+      <View style={styles.container}>
+        <SecondaryHeader
+          title={"Mis métodos de pago"}
+          navigation={navigation}
+        />
+        <View style={styles.body}>
+          {loading ? (
+            <ActivityIndicator size="large" color={theme.colors.fontGrey} />
+          ) : (
+            <FlatList
+              data={pmethods}
+              keyboardShouldPersistTaps={"handled"}
+              renderItem={({ item }) => (
+                <PaymentItem
+                  title={getTitle(item.type)}
+                  icon={getType(item.type)}
+                  number={item.cardNumber}
+                  actions={true}
+                  onDelete={() => deleteMethod(item.id)}
+                />
+              )}
+              keyExtractor={(item) => item.id}
+            />
+          )}
+        </View>
+        <Pressable
+          style={styles.links}
+          onPress={() => navigation.navigate("AddPaymentMethod")}
+        >
+          <Text>Añadir método de pago</Text>
+        </Pressable>
       </View>
-      <Pressable
-        style={styles.links}
-        onPress={() => navigation.navigate("AddPaymentMethod")}
-      >
-        <Text>Añadir método de pago</Text>
-      </Pressable>
     </View>
   );
 };
@@ -164,6 +176,6 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     marginTop: 15,
-    marginBottom: 50
+    marginBottom: 50,
   },
 };
