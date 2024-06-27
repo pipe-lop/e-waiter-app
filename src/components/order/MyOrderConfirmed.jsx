@@ -24,20 +24,26 @@ const MyOrderConfirmed = (props) => {
   );
 
   return (
-    <View style={styles.container}>
-      <Navbar navigation={navigation} hideMenu={true} hideProfile={true}/>
-      <View style={styles.body}>
-        <View style={styles.header}>
-          <Text style={styles.title}>El pedido confirmado</Text>
-        </View>
-        <View style={{ marginHorizontal: 40, marginVertical: 10 }}>
-          <Text style={[{ fontSize: theme.fontSizes.h3, textAlign: "center" }]}>
-            El pedido ha sido confirmado, en breve te indicarán que tu pedido
-            está listo con el número que te indicamos a continuación
-          </Text>
-        </View>
-        <View style={{alignItems: 'center', justifyContent:'center', flex: 1}}>
-          <Text style={{fontSize:60}}>{route.params.orderId}</Text>
+    <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
+      <View style={styles.container}>
+        <Navbar navigation={navigation} hideMenu={true} hideProfile={true} />
+        <View style={styles.body}>
+          <View style={styles.header}>
+            <Text style={styles.title}>El pedido confirmado</Text>
+          </View>
+          <View style={{ marginHorizontal: 40, marginVertical: 10 }}>
+            <Text
+              style={[{ fontSize: theme.fontSizes.h3, textAlign: "center" }]}
+            >
+              El pedido ha sido confirmado, en breve te indicarán que tu pedido
+              está listo con el número que te indicamos a continuación
+            </Text>
+          </View>
+          <View
+            style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
+          >
+            <Text style={{ fontSize: 60 }}>{route.params.orderId}</Text>
+          </View>
         </View>
       </View>
     </View>
