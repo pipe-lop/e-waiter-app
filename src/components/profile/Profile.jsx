@@ -6,38 +6,57 @@ import UserAvatar from "react-native-user-avatar";
 import ProfileOption from "./ProfileOption";
 import firebase from "../../../database/firebase";
 import { signOut } from "firebase/auth";
+import theme from "../../theme";
 
-
-const singOut = async() => {
-  try{
-    await signOut(firebase.auth)
-    .then(() => console.log('User signed out!'));
-  }catch(error){
-    console.log(error)
+const singOut = async () => {
+  try {
+    await signOut(firebase.auth).then(() => console.log("User signed out!"));
+  } catch (error) {
+    console.log(error);
   }
-}
+};
 
 const onPress = (page, navigation) => {
   navigation.navigate(page);
-}
+};
 
 const Profile = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <ProfileHeader navigation={navigation} />
-      <View style={styles.row}>
-        <UserAvatar
-          size={200}
-          style={styles.avatar}
-          bgColor="#101B1C"
-          name={"Andres"}
-        />
-      </View>
-      <View style={styles.options}>
-        <ProfileOption navigation={navigation} title="Mis pedidos" onPressAction={() => onPress("MyOrdersList", navigation)}/>
-        <ProfileOption navigation={navigation} title="Métodos de pago" onPressAction={() => onPress("PaymentMethodList", navigation)}/>
-        <ProfileOption navigation={navigation} title="Datos personales" onPressAction={() => onPress("ProfileDetails", navigation)}/>
-        <ProfileOption navigation={navigation} title="Cerrar sesión" onPressAction={() => singOut()}/>
+    <View
+      style={{ backgroundColor: theme.colors.background, flex: 1, flexGrow: 1 }}
+    >
+      <View style={styles.container}>
+        <ProfileHeader navigation={navigation} />
+        <View style={styles.row}>
+          <UserAvatar
+            size={200}
+            style={styles.avatar}
+            bgColor="#101B1C"
+            name={"Andres"}
+          />
+        </View>
+        <View style={styles.options}>
+          <ProfileOption
+            navigation={navigation}
+            title="Mis pedidos"
+            onPressAction={() => onPress("MyOrdersList", navigation)}
+          />
+          <ProfileOption
+            navigation={navigation}
+            title="Métodos de pago"
+            onPressAction={() => onPress("PaymentMethodList", navigation)}
+          />
+          <ProfileOption
+            navigation={navigation}
+            title="Datos personales"
+            onPressAction={() => onPress("ProfileDetails", navigation)}
+          />
+          <ProfileOption
+            navigation={navigation}
+            title="Cerrar sesión"
+            onPressAction={() => singOut()}
+          />
+        </View>
       </View>
     </View>
   );
@@ -58,11 +77,11 @@ const styles = {
   row: {
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 60
+    marginVertical: 60,
   },
   options: {
     width: "100%",
-  }
+  },
 };
 
 export default Profile;

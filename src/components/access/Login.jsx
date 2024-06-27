@@ -62,37 +62,42 @@ const Login = ({ navigation }) => {
     singIn();
   };
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <AccessHeader title={"Iniciar Sesión"} />
-      </View>
-      <View style={styles.body}>
-        <View style={styles.form}>
-          <CustomInput
-            name={"Email"}
-            onChangeHandler={(value) => handleChangeText("email", value)}
-            secureTextEntry={false}
-            autoCapitalize={"none"}
-            placeholder={"ejemplo@ewaiter.com"}
-          />
-          <CustomInput
-            name={"Contraseña"}
-            onChangeHandler={(value) => handleChangeText("password", value)}
-            secureTextEntry={true}
-            autoCapitalize={"none"}
-            placeholder={"***********"}
-          />
+    <View style={{ backgroundColor: theme.colors.background, flex: 1, flexGrow: 1 }}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <AccessHeader title={"Iniciar Sesión"} />
         </View>
-        {loading ? (
-          <ActivityIndicator size="large" color={theme.colors.fontGrey} />
-        ) : (
-          options(navigation)
-        )}
-      </View>
-      <View style={[theme.footer]}>
-        <TouchableOpacity style={theme.darkButton} onPress={handleLoginButton}>
-          <Text style={theme.buttonText}>Iniciar sesión</Text>
-        </TouchableOpacity>
+        <View style={styles.body}>
+          <View style={styles.form}>
+            <CustomInput
+              name={"Email"}
+              onChangeHandler={(value) => handleChangeText("email", value)}
+              secureTextEntry={false}
+              autoCapitalize={"none"}
+              placeholder={"ejemplo@ewaiter.com"}
+            />
+            <CustomInput
+              name={"Contraseña"}
+              onChangeHandler={(value) => handleChangeText("password", value)}
+              secureTextEntry={true}
+              autoCapitalize={"none"}
+              placeholder={"***********"}
+            />
+          </View>
+          {loading ? (
+            <ActivityIndicator size="large" color={theme.colors.fontGrey} />
+          ) : (
+            options(navigation)
+          )}
+        </View>
+        <View style={[theme.footer]}>
+          <TouchableOpacity
+            style={theme.darkButton}
+            onPress={handleLoginButton}
+          >
+            <Text style={theme.buttonText}>Iniciar sesión</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

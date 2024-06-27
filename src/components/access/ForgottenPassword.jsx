@@ -4,7 +4,7 @@ import AccessHeader from "./AccessHeader";
 import theme from "../../theme";
 import CustomInput from "../formComponents/CustomInput";
 import Constants from "expo-constants";
-import {sendPasswordResetEmail } from "firebase/auth"
+import { sendPasswordResetEmail } from "firebase/auth";
 import firebase from "../../../database/firebase";
 import validator from "validator";
 
@@ -44,52 +44,59 @@ const info = (navigation) => {
 
 const ForgottenPassword = ({ navigation }) => {
   const [sent, setSent] = useState(false);
-    const [email, setEmail] = useState("")
+  const [email, setEmail] = useState("");
   const handleLoginButton = () => {
     console.log("HandleLoginButton");
-    console.log(email)
-    if(email != ""){
-        if(validator.isEmail(email)){
+    console.log(email);
+    if (email != "") {
+      if (validator.isEmail(email)) {
         sendPasswordResetEmail(firebase.auth, email)
-            .then(() => {
-                setSent(true);
-                setEmail("")
-            })
-            .catch((error) => {
-                Alert.alert("Error", error.message)
-            })
-        }else{
-            Alert.alert("Atención", "La dirección de correo electrónico introducido no tiene un formato aceptado.")
-        }
+          .then(() => {
+            setSent(true);
+            setEmail("");
+          })
+          .catch((error) => {
+            Alert.alert("Error", error.message);
+          });
+      } else {
+        Alert.alert(
+          "Atención",
+          "La dirección de correo electrónico introducido no tiene un formato aceptado."
+        );
+      }
     } else {
-        Alert.alert("Atención", "Es requerida la información de correo electrónico.")
+      Alert.alert(
+        "Atención",
+        "Es requerida la información de correo electrónico."
+      );
     }
-    
   };
   const handleChangeText = (value) => {
-    setEmail(value)
+    setEmail(value);
   };
   return (
-    <View style={styles.container}>
-      <View style={[styles.header]}>
-        <AccessHeader title="Ha olvidado la contraseña" />
-      </View>
-      <View style={styles.body}>
-        {sent
-          ? info(navigation)
-          : emailForm((value) => handleChangeText(value), email)}
-      </View>
-      <View style={[theme.footer]}>
-        {sent ? (
-          <></>
-        ) : (
-          <TouchableOpacity
-            style={theme.darkButton}
-            onPress={handleLoginButton}
-          >
-            <Text style={theme.buttonText}>Enviar correo</Text>
-          </TouchableOpacity>
-        )}
+    <View style={{ backgroundColor: theme.colors.background, flex: 1, flexGrow: 1 }}>
+      <View style={styles.container}>
+        <View style={[styles.header]}>
+          <AccessHeader title="Ha olvidado la contraseña" />
+        </View>
+        <View style={styles.body}>
+          {sent
+            ? info(navigation)
+            : emailForm((value) => handleChangeText(value), email)}
+        </View>
+        <View style={[theme.footer]}>
+          {sent ? (
+            <></>
+          ) : (
+            <TouchableOpacity
+              style={theme.darkButton}
+              onPress={handleLoginButton}
+            >
+              <Text style={theme.buttonText}>Enviar correo</Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
     </View>
   );
