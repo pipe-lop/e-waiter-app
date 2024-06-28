@@ -26,6 +26,7 @@ import PaymentMethodList from "./payment/PaymentMethodList.jsx";
 import MyOrderConfirmed from "./order/MyOrderConfirmed.jsx";
 import MyOrders from "./order/MyOrders.jsx";
 import OrderDetail from "./order/OrderDetail.jsx";
+import CustomizeProduct from "./products/CustomizeProduct.jsx";
 
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +50,7 @@ function InsideLayout() {
       <InsideStack.Screen name="MyOrderConfirmed" component={MyOrderConfirmed} />
       <InsideStack.Screen name="MyOrdersList" component={MyOrders} />
       <InsideStack.Screen name="OrderDetail" component={OrderDetail} />
+      <InsideStack.Screen name="CustomizeProduct" component={CustomizeProduct} />
     </InsideStack.Navigator>
   );
 }

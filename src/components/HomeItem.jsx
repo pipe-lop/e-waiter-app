@@ -2,11 +2,12 @@ import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import theme from "../theme";
 
-const HomeItem = ({id, name, url, navigation, navigate, detail}) => {
+const HomeItem = ({id, name, url, navigation, navigate, detail, personalizable}) => {
   const onPress = () => navigation.navigate(navigate, {
     id: id,
     detail: detail,
-    title: name
+    title: name,
+    personalizable: personalizable
   });
   
   return (
