@@ -3,11 +3,20 @@ import Constants from "expo-constants";
 const theme = {
   colors: {
     background: "#EAE8E8",
+    greenButton: "#AFFC63",
+    redButton: "#FF9191",
     white: "#fff",
     red: "#FF5733",
     blue: "#4287f5",
     yellow: "#f5e342",
-    fontGrey: "605f5f"
+    fontGrey: "#605f5f"
+  },
+  quantityButton: {
+    height: 30,
+    width: 30,
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center"
   },
   darkButton: {
     backgroundColor: "#101B1C",
@@ -17,6 +26,14 @@ const theme = {
     alignItems: "center",
     justifyContent: "center",
     marginTop: 10
+  },
+  redButton: {
+    backgroundColor: "#CE0000",
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 6,
+    paddingHorizontal: 12
   },
   buttonText: {
     color: "#DDDDDD",
@@ -44,6 +61,7 @@ const theme = {
     h1: 30,
     h2: 25,
     h3: 20,
+    h4: 16,
     inputHeader: 13,
     inputText: 15
   }

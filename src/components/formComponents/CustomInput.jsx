@@ -2,20 +2,25 @@ import React from "react";
 import { Text, TextInput, View } from "react-native";
 import theme from "../../theme";
 
-const CustomInput = ({ name, secureTextEntry, value, onChangeHandler, placeholder }) => {
+const CustomInput = React.forwardRef((props, ref) => {
+  const { name, secureTextEntry, value, onChangeHandler, placeholder, editable, autoCapitalize, ...restOfProps } = props
   return (
     <View style={styles.container}>
       <Text style={styles.fontHeader}>{name}</Text>
       <TextInput 
+        {...restOfProps}
+        ref={ref}
         style={styles.fontInput} 
         secureTextEntry={secureTextEntry}
         value={value}
         onChangeText={onChangeHandler} 
         placeholder={placeholder}
+        editable={editable}
+        autoCapitalize={autoCapitalize}
         />
     </View>
   );
-};
+});
 
 const styles = {
   container: {

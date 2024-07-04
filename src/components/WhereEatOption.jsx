@@ -1,16 +1,16 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import theme from "../theme.js";
+import Fontisto from "@expo/vector-icons/Fontisto";
 
-const WhereEatOption = ({ Description, navigation }) => {
-  const onPress = () => navigation.navigate('Home');
+const WhereEatOption = ({ description, onPress, icon }) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.container}>
-        <View>
-          <Text style={styles.text}>Aqui iria la imagen</Text>
+        <View style={styles.icon}>
+          <Fontisto name={icon} size={40} />
         </View>
-        <Text style={styles.text}>{Description}</Text>
+        <Text style={styles.text}>{description}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -22,11 +22,14 @@ const styles = {
     height: 166,
     backgroundColor: theme.colors.white,
     justifyContent: "center",
-    margin: 10,
+    alignItems: "center",
     borderRadius: 20,
   },
   text: {
     textAlign: "center",
+  },
+  icon: {
+    padding: 20,
   },
 };
 

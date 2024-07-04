@@ -1,28 +1,99 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Constants from "expo-constants";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import theme from "../theme.js";
-import Welcome from './Welcome.jsx';
-import Home from './Home.jsx';
+import Welcome from "./Welcome.jsx";
+import Home from "./Home.jsx";
 import CategoryItems from "./CategoryItems.jsx";
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ItemDetail from "./ItemDetail.jsx";
+import { onAuthStateChanged } from "firebase/auth";
+import firebase from "../../database/firebase.js";
+import Login from "./access/Login.jsx";
 import Register from "./access/Register.jsx";
+import Profile from "./profile/Profile.jsx";
+import ProfileDetails from "./profile/ProfileDetails.jsx";
+import ChangePassword from "./profile/ChangePassword.jsx";
+import ForgottenPassword from "./access/ForgottenPassword.jsx";
+import SecondaryNavbar from "./navigation/SecondaryNavbar.jsx";
+import { Provider } from "react-redux";
+import store from "../../store.js";
+import MyOrder from "./order/MyOrder.jsx";
+import SelectPaymentMethod from "./payment/SelectPaymentMethod.jsx";
+import AddPaymentMethod from "./payment/AddPaymentMethod.jsx";
+import PaymentMethodList from "./payment/PaymentMethodList.jsx";
+import MyOrderConfirmed from "./order/MyOrderConfirmed.jsx";
+import MyOrders from "./order/MyOrders.jsx";
+import OrderDetail from "./order/OrderDetail.jsx";
+import CustomizeProduct from "./products/CustomizeProduct.jsx";
+import OrderComments from "./order/OrderComments.jsx";
 
 const Stack = createNativeStackNavigator();
 
-const Main = () => {
+const InsideStack = createNativeStackNavigator();
+
+function InsideLayout() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Register" screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Register" component={Register}/>
-        <Stack.Screen name="Welcome" component={Welcome}/>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="ItemDetail" component={ItemDetail} />
-        <Stack.Screen name="CategoryItems" component={CategoryItems} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <InsideStack.Navigator screenOptions={{ headerShown: false }}>
+      <InsideStack.Screen name="Home" component={Home} />
+      <InsideStack.Screen name="ItemDetail" component={ItemDetail} />
+      <InsideStack.Screen name="CategoryItems" component={CategoryItems} />
+      <InsideStack.Screen name="Profile" component={Profile} />
+      <InsideStack.Screen name="ProfileDetails" component={ProfileDetails} />
+      <InsideStack.Screen name="ChangePassword" component={ChangePassword} />
+      <InsideStack.Screen name="SecondaryNavbar" component={SecondaryNavbar} />
+      <InsideStack.Screen name="MyOrder" component={MyOrder} />
+      <InsideStack.Screen name="SelectPaymentMethod" component={SelectPaymentMethod} />
+      <InsideStack.Screen name="AddPaymentMethod" component={AddPaymentMethod} />
+      <InsideStack.Screen name="PaymentMethodList" component={PaymentMethodList} />
+      <InsideStack.Screen name="MyOrderConfirmed" component={MyOrderConfirmed} />
+      <InsideStack.Screen name="MyOrdersList" component={MyOrders} />
+      <InsideStack.Screen name="OrderDetail" component={OrderDetail} />
+      <InsideStack.Screen name="CustomizeProduct" component={CustomizeProduct} />
+      <InsideStack.Screen name="OrderComments" component={OrderComments} />
+      <InsideStack.Screen name="Welcome" component={Welcome} />
+    </InsideStack.Navigator>
+  );
+}
+function OutsideLayout() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="ForgottenPassword" component={ForgottenPassword} />
+    </Stack.Navigator>
+  );
+}
+
+const Main = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    onAuthStateChanged(firebase.auth, (user) => {
+      setUser(user);
+    });
+  }, []);
+
+  return (
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Login"
+          screenOptions={{ headerShown: false }}
+        >
+          {user ? (
+            <Stack.Screen
+              name="Inside"
+              component={InsideLayout}
+              options={{ headerShown: false }}
+            />
+          ) : (
+            <Stack.Screen name="Outside" component={OutsideLayout} />
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 };
 
