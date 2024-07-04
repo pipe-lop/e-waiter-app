@@ -101,15 +101,6 @@ const CustomizeProduct = (props) => {
         <View style={styles.titlebox}>
           <Text style={styles.titletext}>Personaliza tu producto</Text>
         </View>
-        {customized ? (
-          <View style={styles.squareR}>
-            <Text>Cambiado</Text>
-          </View>
-        ) : (
-          <View style={styles.squareG}>
-            <Text>Original</Text>
-          </View>
-        )}
         <View style={styles.body}>
           <FlatList
             data={customizations}

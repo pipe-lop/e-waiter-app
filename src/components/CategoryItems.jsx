@@ -29,7 +29,7 @@ const CategoryItems = ({ navigation, route }) => {
         id: doc.id,
         nombre,
         precio,
-        personalizaciones
+        personalizaciones,
       });
     });
     setProducts(pds);
@@ -60,8 +60,8 @@ const CategoryItems = ({ navigation, route }) => {
     navigation.navigate("Home");
   };
   const goToCustomize = (item) => {
-    navigation.navigate("CustomizeProduct",{
-      item: item
+    navigation.navigate("CustomizeProduct", {
+      item: item,
     });
   };
   const goToItemDetail = (id) => {
@@ -102,11 +102,15 @@ const CategoryItems = ({ navigation, route }) => {
             extraData={selected}
           />
         </View>
-        <View style={[theme.footer]}>
-          <Pressable style={theme.darkButton} onPress={() => addItemToCart()}>
-            <Text style={theme.buttonText}>Añadir</Text>
-          </Pressable>
-        </View>
+        {selected ? (
+          <View style={[theme.footer]}>
+            <Pressable style={theme.darkButton} onPress={() => addItemToCart()}>
+              <Text style={theme.buttonText}>Añadir</Text>
+            </Pressable>
+          </View>
+        ) : (
+          <></>
+        )}
       </View>
     </View>
   );
