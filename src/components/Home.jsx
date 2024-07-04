@@ -24,12 +24,13 @@ const Home = ({ navigation }) => {
     const q = query(collection(firebase.db, "categories"), orderBy("orden"));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      const { nombre, imagen, detalle } = doc.data();
+      const { nombre, imagen, detalle, personalizable } = doc.data();
       cts.push({
         id: doc.id,
         nombre,
         imagen,
-        detalle
+        detalle,
+        personalizable
       });
     });
     setCategorias(cts);
@@ -40,12 +41,13 @@ const Home = ({ navigation }) => {
       const dest = []
       const querySnapshot = await getDocs(collection(firebase.db, "featured"))
       querySnapshot.forEach((doc) => {
-        const {name, image, productId} = doc.data()
+        const {name, image, productId, personalizable} = doc.data()
         dest.push({
           id: doc.id,
           nombre: name,
           imagen: image,
-          productId
+          productId,
+          personalizable
         })
       })
       setDestacados(dest)
@@ -89,6 +91,7 @@ const Home = ({ navigation }) => {
                 name={value.nombre}
                 navigation={navigation}
                 detail={false}
+                personalizable={value.personalizable}
                 navigate={"ItemDetail"}
               />
             ))}
@@ -113,6 +116,7 @@ const Home = ({ navigation }) => {
                   name={category.nombre}
                   navigation={navigation}
                   detail={category.detalle}
+                  personalizable={category.personalizable}
                   navigate={"CategoryItems"}
                 />
               </View>

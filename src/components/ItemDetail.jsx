@@ -19,6 +19,7 @@ import Toast from "react-native-root-toast";
 
 const ItemDetail = ({ navigation, route }) => {
   const itemId = route.params.id;
+  const customizable = route.params.personalizable;
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState(null);
   const dispatch = useDispatch();
@@ -31,13 +32,14 @@ const ItemDetail = ({ navigation, route }) => {
     try {
       const docRef = doc(firebase.db, "products", itemId);
       const docSnap = await getDoc(docRef);
-      console.log(docSnap.data())
+      console.log(docSnap.data());
       if (docSnap.exists()) {
         setItem({
           imagen: docSnap.data().imagen,
           nombre: docSnap.data().nombre,
           precio: docSnap.data().precio,
           descripcion: docSnap.data().descripcion,
+          personalizaciones: docSnap.data().personalizaciones
         });
         setLoading(false);
       }
@@ -47,20 +49,40 @@ const ItemDetail = ({ navigation, route }) => {
   };
 
   const addItemToCart = () => {
-    dispatch(addToCart({
-      id: itemId,
-      nombre: item.nombre,
-      precio: item.precio
-    }))
-    Toast.show('Se ha añadido el producto a tu pedido',{
-      duration: Toast.durations.LONG,
-    })
-    navigation.navigate('Home')
-  }
+    if (customizable) {
+      goToCustomize({
+        ...item,
+        id: itemId,
+      })
+    } else {
+      dispatch(
+        addToCart({
+          id: itemId,
+          nombre: item.nombre,
+          precio: item.precio,
+        })
+      );
+      Toast.show("Se ha añadido el producto a tu pedido", {
+        duration: Toast.durations.LONG,
+      });
+      navigation.navigate("Home");
+    }
+  };
+
+  const goToCustomize = (item) => {
+    navigation.navigate("CustomizeProduct",{
+      item: item
+    });
+  };
 
   return (
     <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
-      <View style={[{ marginTop: Constants.statusBarHeight, flex: 1 }, theme.container]}>
+      <View
+        style={[
+          { marginTop: Constants.statusBarHeight, flex: 1 },
+          theme.container,
+        ]}
+      >
         <View style={[theme.header]}>
           <Navbar navigation={navigation} />
         </View>

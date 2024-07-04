@@ -28,6 +28,8 @@ const SelectPaymentMethod = ({ navigation }) => {
   const [selected, setSelected] = useState(null);
 
   const cart = useSelector((state) => state.cart.cart);
+  const onsite = useSelector((state) => state.cart.onSite);
+  const obs = useSelector((state) => state.cart.customizations);
   const [totalCart, setTotalCart] = useState(0);
 
   const dispatch = useDispatch();
@@ -137,16 +139,27 @@ const SelectPaymentMethod = ({ navigation }) => {
           await transaction.update(statsRef, { orders: increment(1) });
           orderId = oStats.data().orders;
         }
-        await transaction.set(doc(collection(firebase.db, "orders")), {
+        const ocollection = collection(firebase.db, "orders")
+        const docum = doc(ocollection)
+        const newOrderDoc = {
           orderId: orderId,
           totalAmmount: totalCart,
-          inSite: true,
+          inSite: onsite,
+          customizations: obs,
           client: userId,
           status: "created",
           createdDate: serverTimestamp(),
           updateDate: serverTimestamp(),
-          items: cart,
-        });
+          items: cart.map((item) => {
+            return {
+              id: item.id,
+              nombre: item.nombre,
+              precio: item.precio,
+              quantity: item.quantity
+            }
+          }),
+        }
+        await transaction.set(docum, newOrderDoc);
         dispatch(cleanCart());
         navigation.navigate("MyOrderConfirmed", {
           orderId: orderId,
