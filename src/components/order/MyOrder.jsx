@@ -55,7 +55,8 @@ const MyOrder = ({ navigation }) => {
   }, [cart]);
   const handleOrderComfirm = () => {
     if (totalCart > 0) {
-      navigation.navigate("SelectPaymentMethod");
+      // navigation.navigate("SelectPaymentMethod");
+      navigation.navigate("Welcome");
     } else {
       Toast.show("No ha añadido productos al pedido", {
         duration: Toast.durations.SHORT,

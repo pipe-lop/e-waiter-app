@@ -36,7 +36,6 @@ const InsideStack = createNativeStackNavigator();
 function InsideLayout() {
   return (
     <InsideStack.Navigator screenOptions={{ headerShown: false }}>
-      <InsideStack.Screen name="Welcome" component={Welcome} />
       <InsideStack.Screen name="Home" component={Home} />
       <InsideStack.Screen name="ItemDetail" component={ItemDetail} />
       <InsideStack.Screen name="CategoryItems" component={CategoryItems} />
@@ -53,6 +52,7 @@ function InsideLayout() {
       <InsideStack.Screen name="OrderDetail" component={OrderDetail} />
       <InsideStack.Screen name="CustomizeProduct" component={CustomizeProduct} />
       <InsideStack.Screen name="OrderComments" component={OrderComments} />
+      <InsideStack.Screen name="Welcome" component={Welcome} />
     </InsideStack.Navigator>
   );
 }

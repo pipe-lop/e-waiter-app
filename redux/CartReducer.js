@@ -78,6 +78,9 @@ export const CartSlice = createSlice({
       }
       state.customizations.push(customization);
     },
+    addWhereOption: (state, action) => {
+      state.onSite = action.payload
+    },
   },
 });
 
@@ -89,6 +92,7 @@ export const {
   cleanCart,
   overrideCart,
   addCustomization,
+  addWhereOption
 } = CartSlice.actions;
 
 export default CartSlice.reducer;
