@@ -67,6 +67,7 @@ const CategoryItems = ({ navigation, route }) => {
   const goToItemDetail = (id) => {
     navigation.navigate("ItemDetail", {
       id: id,
+      personalizable: customizable
     });
   };
   return (

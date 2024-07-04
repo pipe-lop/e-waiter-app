@@ -60,6 +60,8 @@ export const CartSlice = createSlice({
     },
     cleanCart: (state) => {
       state.cart = [];
+      state.customizations = [];
+      state.onSite = true;
     },
     overrideCart: (state, action) => {
       state.cart = action.payload;
