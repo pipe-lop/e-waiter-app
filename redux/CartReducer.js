@@ -47,7 +47,7 @@ export const CartSlice = createSlice({
         );
         if (times > 0) {
           let indexes = getAllIndexes(state.customizations, itemPresent);
-          indexes.map((i) => state.customizations.splice(i, 1))
+          indexes.map((i) => state.customizations.splice(i, 1));
         }
         state.cart = removeItem;
       } else {
@@ -83,7 +83,7 @@ export const CartSlice = createSlice({
       state.customizations.push(customization);
     },
     addWhereOption: (state, action) => {
-      state.onSite = action.payload
+      state.onSite = action.payload;
     },
   },
 });
@@ -96,7 +96,7 @@ export const {
   cleanCart,
   overrideCart,
   addCustomization,
-  addWhereOption
+  addWhereOption,
 } = CartSlice.actions;
 
 export default CartSlice.reducer;

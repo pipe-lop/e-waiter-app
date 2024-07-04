@@ -24,6 +24,7 @@ const OrderDetail = (props) => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
+  const [haveobs, sethaveObs] = useState(false);
   const [order, setOrder] = useState({
     id: "",
     orderId: 0,
@@ -60,6 +61,9 @@ const OrderDetail = (props) => {
           updatedDate: docSnap.data().updateDate,
         });
         setLoading(false);
+        if(docSnap.data().customizations.length > 0){
+          sethaveObs(true)
+        }
       }
     } catch (e) {
       console.log("Error al obtener el detalle del pedido: ", e);
@@ -97,7 +101,7 @@ const OrderDetail = (props) => {
       );
     } else {
       const payload = {
-        customizations: order.customizations,
+        customizations: order.customizations ? order.customizations : [],
         cart: order.items,
         onSite: order.inSite
       }
@@ -145,7 +149,8 @@ const OrderDetail = (props) => {
                   <Text>{order.totalAmount} €</Text>
                 </View>
               </View>
-              <View style={styles.obs}>
+              {haveobs ? (
+                <View style={styles.obs}>
                 <Pressable
                   style={[styles.col_stats]}
                   onPress={() => navigation.navigate("OrderComments", {
@@ -157,6 +162,10 @@ const OrderDetail = (props) => {
                   <Text>Observaciones</Text>
                 </Pressable>
               </View>
+              ) : (
+                <></>
+              )}
+              
               <View style={styles.items}>
                 <FlatList
                   data={order.items}
