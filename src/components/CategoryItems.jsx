@@ -24,11 +24,12 @@ const CategoryItems = ({ navigation, route }) => {
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      const { nombre, precio } = doc.data();
+      const { nombre, precio, personalizaciones } = doc.data();
       pds.push({
         id: doc.id,
         nombre,
         precio,
+        personalizaciones
       });
     });
     setProducts(pds);
@@ -45,7 +46,7 @@ const CategoryItems = ({ navigation, route }) => {
   const addItemToCart = () => {
     const item = products.find((item) => selected === item.id);
     if (customizable) {
-      goToCustomize();
+      goToCustomize(item);
     } else {
       dispatch(addToCart(item));
       Toast.show("Se ha añadido el producto a tu pedido", {
@@ -58,8 +59,10 @@ const CategoryItems = ({ navigation, route }) => {
   const goToHome = () => {
     navigation.navigate("Home");
   };
-  const goToCustomize = () => {
-    navigation.navigate("CustomizeProduct");
+  const goToCustomize = (item) => {
+    navigation.navigate("CustomizeProduct",{
+      item: item
+    });
   };
   const goToItemDetail = (id) => {
     navigation.navigate("ItemDetail", {
