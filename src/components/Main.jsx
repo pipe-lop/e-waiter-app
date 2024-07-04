@@ -27,6 +27,7 @@ import MyOrderConfirmed from "./order/MyOrderConfirmed.jsx";
 import MyOrders from "./order/MyOrders.jsx";
 import OrderDetail from "./order/OrderDetail.jsx";
 import CustomizeProduct from "./products/CustomizeProduct.jsx";
+import OrderComments from "./order/OrderComments.jsx";
 
 const Stack = createNativeStackNavigator();
 
@@ -51,6 +52,7 @@ function InsideLayout() {
       <InsideStack.Screen name="MyOrdersList" component={MyOrders} />
       <InsideStack.Screen name="OrderDetail" component={OrderDetail} />
       <InsideStack.Screen name="CustomizeProduct" component={CustomizeProduct} />
+      <InsideStack.Screen name="OrderComments" component={OrderComments} />
     </InsideStack.Navigator>
   );
 }

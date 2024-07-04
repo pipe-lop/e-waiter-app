@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getAllIndexes, getTimes, times } from "../src/utils/common";
 
 export const CartSlice = createSlice({
     name: "cart",
@@ -18,6 +19,10 @@ export const CartSlice = createSlice({
         },
         removeFromCart: (state,action) => {
             const removeItem = state.cart.filter((item) => item.id !== action.payload.id);
+            if(getTimes(state.customizations, action.payload) > 0){
+                let indexes = getAllIndexes(state.customizations, action.payload)
+                indexes.map((i) => state.customizations.splice(i, 1))
+            }
             state.cart = removeItem;
         },
         incremetQuantity: (state, action) => {
@@ -37,6 +42,11 @@ export const CartSlice = createSlice({
                 );
                 state.cart = removeItem
             } else {
+                let times = getTimes(state.customizations, itemPresent)
+                if( times > 0 && times === itemPresent.quantity){
+                    let indexes = getAllIndexes(state.customizations, itemPresent)
+                    state.customizations.splice(indexes[indexes.length - 1], 1)
+                }
                 itemPresent.quantity--;
             }
         },
@@ -47,8 +57,6 @@ export const CartSlice = createSlice({
             state.cart = action.payload;
         },
         addCustomization: (state, action) => {
-            console.log(action)
-            console.log(state)
             product = action.payload.item
             customization = {
                 product: product.nombre,

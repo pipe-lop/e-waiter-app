@@ -10,9 +10,30 @@ import {
   incremetQuantity,
 } from "../../../redux/CartReducer";
 import Toast from "react-native-root-toast";
+import Fontisto from "@expo/vector-icons/Fontisto";
+
+const myOrderHeader = () => {
+  return (
+    <View style={[styles.titlebox, {justifyContent: 'center'}]}>
+      <Text style={styles.titletext}>Mi pedido</Text>
+    </View>
+  );
+};
+const myOrderHeaderObs = (navigation) => {
+  return (
+    <View style={[styles.titlebox, {justifyContent: 'space-between'}]}>
+      <Text style={styles.titletext}>Mi pedido</Text>
+      <Pressable style={[styles.col_stats]} onPress={() => navigation.navigate("OrderComments")}>
+        <Fontisto name={"zoom"} size={26} />
+        <Text>Observaciones</Text>
+      </Pressable>
+    </View>
+  );
+};
 
 const MyOrder = ({ navigation }) => {
   const cart = useSelector((state) => state.cart.cart);
+  const obs = useSelector((state)  => state.cart.customizations)
   const [totalCart, setTotalCart] = useState(0);
   const dispatch = useDispatch();
   const incremetItemQuantity = (item) => {
@@ -48,9 +69,7 @@ const MyOrder = ({ navigation }) => {
         <View style={[theme.header]}>
           <Navbar navigation={navigation} />
         </View>
-        <View style={styles.titlebox}>
-          <Text style={styles.titletext}>Mi pedido</Text>
-        </View>
+        {obs.length > 0 ? (myOrderHeaderObs(navigation)) : (myOrderHeader())}
         <View style={styles.body}>
           <FlatList
             data={cart}
@@ -111,12 +130,21 @@ const styles = {
     justifyContent: "space-between",
   },
   titlebox: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 15
+    width: "100%",
+    alignItems: "center",
+    marginBottom: 15,
+    paddingHorizontal: 20,
+    flexDirection: "row",
   },
   titletext: {
-    fontSize: theme.fontSizes.h1
-  }
+    fontSize: theme.fontSizes.h1,
+  },
+  col_stats: {
+    backgroundColor: theme.colors.white,
+    padding: 10,
+    borderRadius: 10,
+    flexDirection: "row",
+    justifyContent: 'space-between',
+    alignItems: "center",
+  },
 };
