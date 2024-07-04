@@ -64,7 +64,9 @@ export const CartSlice = createSlice({
       state.onSite = true;
     },
     overrideCart: (state, action) => {
-      state.cart = action.payload;
+      state.cart = action.payload.cart;
+      state.customizations = action.payload.customizations;
+      state.onSite = action.payload.onSite;
     },
     addCustomization: (state, action) => {
       product = action.payload.item;

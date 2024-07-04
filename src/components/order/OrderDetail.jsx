@@ -1,4 +1,4 @@
-import { ActivityIndicator, Alert, FlatList, Text, View } from "react-native";
+import { ActivityIndicator, Alert, FlatList, Pressable, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import firebase from "../../../database/firebase";
@@ -29,6 +29,7 @@ const OrderDetail = (props) => {
     orderId: 0,
     inSite: true,
     items: [],
+    customizations: [],
     status: "",
     totalAmount: 0.0,
     createdDate: "",
@@ -51,6 +52,7 @@ const OrderDetail = (props) => {
           id: docSnap.id,
           orderId: docSnap.data().orderId,
           inSite: docSnap.data().inSite,
+          customizations: docSnap.data().customizations,
           items: docSnap.data().items,
           status: docSnap.data().status,
           totalAmount: docSnap.data().totalAmmount,
@@ -78,7 +80,12 @@ const OrderDetail = (props) => {
           {
             text: "Aceptar",
             onPress: () => {
-              dispatch(overrideCart(order.items));
+              const payload = {
+                customizations: order.customizations,
+                cart: order.items,
+                onSite: order.inSite
+              }
+              dispatch(overrideCart(payload));
               Toast.show("Se ha actualizado tu pedido", {
                 duration: Toast.durations.SHORT,
                 position: Toast.positions.CENTER,
@@ -89,7 +96,12 @@ const OrderDetail = (props) => {
         ]
       );
     } else {
-      dispatch(overrideCart(order.items));
+      const payload = {
+        customizations: order.customizations,
+        cart: order.items,
+        onSite: order.inSite
+      }
+      dispatch(overrideCart(payload));
       Toast.show("Se ha actualizado tu pedido", {
         duration: Toast.durations.SHORT,
         position: Toast.positions.CENTER,
@@ -132,6 +144,18 @@ const OrderDetail = (props) => {
                   <Fontisto name={"dollar"} size={26} />
                   <Text>{order.totalAmount} €</Text>
                 </View>
+              </View>
+              <View style={styles.obs}>
+                <Pressable
+                  style={[styles.col_stats]}
+                  onPress={() => navigation.navigate("OrderComments", {
+                    oldOrder: true,
+                    obs: order.customizations
+                  })}
+                >
+                  <Fontisto name={"zoom"} size={26} />
+                  <Text>Observaciones</Text>
+                </Pressable>
               </View>
               <View style={styles.items}>
                 <FlatList
@@ -203,4 +227,10 @@ const styles = {
   body: {
     flex: 1,
   },
+  obs: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 15
+  }
 };

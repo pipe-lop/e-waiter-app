@@ -7,7 +7,9 @@ import Comment from "./Comment";
 import SecondaryHeader from "../navigation/SecondaryHeader";
 
 const OrderComments = (props) => {
-  const { navigation } = props;
+  const { navigation, route } = props;
+  const oldOrder = route.params?.oldOrder;
+  const obsOldOrder = route.params?.obs;
   const obs = useSelector((state) => state.cart.customizations);
 
   return (
@@ -16,7 +18,7 @@ const OrderComments = (props) => {
         <SecondaryHeader navigation={navigation} title={"Observaciones"} />
         <View style={styles.body}>
           <FlatList
-            data={obs}
+            data={oldOrder ? obsOldOrder : obs}
             keyboardShouldPersistTaps={"handled"}
             renderItem={({ item }) => (
               <Comment
